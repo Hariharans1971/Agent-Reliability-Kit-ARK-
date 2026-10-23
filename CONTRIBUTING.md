@@ -16,13 +16,16 @@ Thank you for helping make agent workflows easier to inspect and test.
 2. Fork the repository and create a focused branch.
 3. Add or update tests for behavioral changes.
 4. Run `python -m unittest discover -s tests -v`.
-5. Open a pull request describing the problem, solution, and validation.
+5. Run `ruff check ark tests` (install Ruff with `python -m pip install ruff` if needed).
+6. Open a pull request describing the problem, solution, and validation.
 
 ## Project expectations
 
 - Python 3.10+.
 - Keep the core dependency-free when practical.
 - Keep public APIs typed and documented.
+- Add regression tests for bug fixes and new policy/diff behavior.
+- Keep examples reproducible without paid APIs, network calls, or real user data.
 - Do not add hidden telemetry or unexpected network calls to the core.
 - Never commit credentials, secrets, or real production traces.
 - Be direct, kind, and constructive in review discussions.
