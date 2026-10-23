@@ -5,13 +5,32 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "agent-reliability-kit"
 version = "0.1.0"
-description = "Local-first tracing and regression checks for AI-agent workflows"
+description = "Local-first policy gates and behavioral regression checks for AI-agent workflows"
 readme = "README.md"
 requires-python = ">=3.10"
 license = {file = "LICENSE"}
 authors = [{name = "Hariharan S."}]
-keywords = ["ai-agents", "observability", "evaluation", "replay", "testing", "llm", "policy-as-code", "github-actions"]
+keywords = ["ai-agents", "agent-testing", "observability", "evaluation", "testing", "llm", "policy-as-code", "github-actions", "jsonl", "trace-diff", "regression-testing"]
+classifiers = [
+  "Development Status :: 3 - Alpha",
+  "Environment :: Console",
+  "Intended Audience :: Developers",
+  "License :: OSI Approved :: MIT License",
+  "Operating System :: OS Independent",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Topic :: Software Development :: Testing",
+  "Topic :: Software Development :: Quality Assurance",
+]
 dependencies = []
+
+[project.urls]
+Homepage = "https://github.com/Hariharans1971/Agent-Reliability-Kit-ARK-"
+Repository = "https://github.com/Hariharans1971/Agent-Reliability-Kit-ARK-.git"
+Issues = "https://github.com/Hariharans1971/Agent-Reliability-Kit-ARK-/issues"
+Changelog = "https://github.com/Hariharans1971/Agent-Reliability-Kit-ARK-/blob/main/CHANGELOG.md"
 
 [project.scripts]
 ark = "ark.cli:main"
