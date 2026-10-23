@@ -5,7 +5,7 @@ A release represents tested behavior, not a roadmap promise.
 1. Review open bugs and document known limitations.
 2. Run `python -m unittest discover -s tests -v`.
 3. Install the package in a clean Python 3.10+ environment.
-4. Smoke-test `ark inspect`, `ark diff`, and `ark evaluate` using synthetic traces.
+4. Smoke-test `ark inspect`, `ark diff --show-paths`, `ark evaluate --junit-xml`, and `ark policy --junit-xml` using synthetic traces.
 5. Confirm the GitHub Actions matrix passes.
 6. Update the version in `pyproject.toml` and `ark/__init__.py`.
 7. Update `CHANGELOG.md`.
