@@ -6,23 +6,37 @@ from ark import TraceRecorder
 def main() -> None:
     trace = TraceRecorder("customer-support-demo", tags={"domain": "support", "model": "mock"})
     trace.record(
-        "tool", "order_lookup", {"order_id": "ORD-1042"},
+        "tool",
+        "order_lookup",
+        {"order_id": "ORD-1042"},
         {"status": "delivered", "days_since_delivery": 3, "amount": 49.99},
-        duration_ms=18, metadata={"source": "synthetic-demo-data"},
+        duration_ms=18,
+        metadata={"source": "synthetic-demo-data"},
     )
     trace.record(
-        "decision", "refund_eligibility",
+        "decision",
+        "refund_eligibility",
         {"days_since_delivery": 3, "policy_window_days": 14},
-        {"eligible": True, "reason": "within_policy_window"}, duration_ms=1,
+        {"eligible": True, "reason": "within_policy_window"},
+        duration_ms=1,
+        token_usage={"input_tokens": 120, "output_tokens": 34, "total_tokens": 154},
+        metadata={"source": "synthetic-llm-usage"},
     )
     trace.record(
-        "tool", "refund_quote", {"order_id": "ORD-1042"},
-        {"currency": "USD", "amount": 49.99}, duration_ms=7,
+        "tool",
+        "refund_quote",
+        {"order_id": "ORD-1042"},
+        {"currency": "USD", "amount": 49.99},
+        duration_ms=7,
     )
     trace.record(
-        "response", "customer_reply", {"intent": "refund_status"},
+        "response",
+        "customer_reply",
+        {"intent": "refund_status"},
         {"message": "The order is eligible; a support agent will confirm the next step."},
         duration_ms=2,
+        token_usage={"input_tokens": 210, "output_tokens": 48, "total_tokens": 258},
+        metadata={"source": "synthetic-llm-usage"},
     )
     output = trace.save(Path("artifacts") / "customer-support.jsonl")
     print(f"Saved {len(trace.events)} events to {output}")
