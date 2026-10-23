@@ -9,11 +9,13 @@
 [![Tests](https://github.com/Hariharans1971/Agent-Reliability-Kit-ARK-/actions/workflows/tests.yml/badge.svg)](https://github.com/Hariharans1971/Agent-Reliability-Kit-ARK-/actions/workflows/tests.yml)
 [![Python 3.10+](https://img.shields.io/badge/Python-3.10%2B-3776AB?logo=python&logoColor=white)](https://python.org)
 [![MIT License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
-[![Contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg)](CONTRIBUTING.md)
+[![Contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg)](CONTRIBUTING.md) [![GitHub stars](https://img.shields.io/github/stars/Hariharans1971/Agent-Reliability-Kit-ARK-?style=social)](https://github.com/Hariharans1971/Agent-Reliability-Kit-ARK-/stargazers)
 
 **AI agents are easy to demo. They are harder to trust.**
 
 A local-first Python toolkit for recording AI-agent workflows as readable JSONL traces and enforcing explicit CI contracts: allowed/required/forbidden actions, per-step execution budgets, and behavioral diffs.
+
+If ARK is useful in your workflow, star the repository and share a reproducible issue using synthetic traces. Real feedback drives the roadmap.
 
 </div>
 
