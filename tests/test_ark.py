@@ -180,6 +180,17 @@ class ARKTests(unittest.TestCase):
         value = {"api_key": "secret", "user": {"email": "x@example.com", "name": "Ada"}}
         self.assertEqual(redact(value), {"api_key": "[REDACTED]", "user": {"email": "[REDACTED]", "name": "Ada"}})
 
+    def test_offline_trace_viewer_has_no_remote_runtime_dependencies(self):
+        viewer = Path(__file__).resolve().parents[1] / "examples" / "trace-viewer.html"
+        html = viewer.read_text(encoding="utf-8")
+        self.assertIn('id="fileInput"', html)
+        self.assertIn("Load sample trace", html)
+        self.assertIn("Local processing by design", html)
+        self.assertIn("textContent", html)
+        for forbidden in ("<script src=", "fetch(", "XMLHttpRequest", "WebSocket(", "EventSource(", ".innerHTML"):
+            with self.subTest(forbidden=forbidden):
+                self.assertNotIn(forbidden.lower(), html.lower())
+
     def test_invalid_jsonl_has_line_number(self):
         with tempfile.TemporaryDirectory() as tmp:
             target = Path(tmp) / "bad.jsonl"
