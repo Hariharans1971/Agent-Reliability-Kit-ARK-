@@ -3,7 +3,9 @@ from __future__ import annotations
 import argparse
 import json
 import sys
+import xml.etree.ElementTree as ET
 from collections import Counter
+from pathlib import Path
 
 from .diff import diff_traces
 from .evaluate import evaluate_trace
@@ -18,6 +20,44 @@ def _print_results(results: list[dict], as_json: bool = False) -> bool:
         for item in results:
             print(f"[{'PASS' if item['passed'] else 'FAIL'}] {item['name']}: {item['message']}")
     return all(item["passed"] for item in results)
+
+
+def _write_junit_xml(results: list[dict], destination: str, suite_name: str) -> None:
+    """Write one JUnit testcase per policy/evaluation check."""
+    failures = sum(not item["passed"] for item in results)
+    suite = ET.Element(
+        "testsuite",
+        {
+            "name": suite_name,
+            "tests": str(len(results)),
+            "failures": str(failures),
+            "errors": "0",
+            "skipped": "0",
+        },
+    )
+    for result in results:
+        testcase = ET.SubElement(
+            suite,
+            "testcase",
+            {"name": str(result["name"]), "classname": "ark"},
+        )
+        if not result["passed"]:
+            failure = ET.SubElement(testcase, "failure", {"message": str(result["message"])})
+            failure.text = str(result["message"])
+    path = Path(destination)
+    path.parent.mkdir(parents=True, exist_ok=True)
+    ET.ElementTree(suite).write(path, encoding="utf-8", xml_declaration=True)
+
+
+def _report_results(
+    results: list[dict],
+    as_json: bool = False,
+    junit_xml: str | None = None,
+    suite_name: str = "ark",
+) -> bool:
+    if junit_xml:
+        _write_junit_xml(results, junit_xml, suite_name)
+    return _print_results(results, as_json)
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -45,11 +85,13 @@ def main(argv: list[str] | None = None) -> int:
     eval_parser.add_argument("--min-steps", type=int, default=1)
     eval_parser.add_argument("--require", action="append", default=[])
     eval_parser.add_argument("--json", action="store_true", help="output JSON results")
+    eval_parser.add_argument("--junit-xml", help="write a JUnit XML report to this path")
 
     policy_parser = sub.add_parser("policy", help="enforce a JSON policy contract against a trace")
     policy_parser.add_argument("trace")
     policy_parser.add_argument("--policy", dest="policy_file", required=True)
     policy_parser.add_argument("--json", action="store_true", help="output JSON results")
+    policy_parser.add_argument("--junit-xml", help="write a JUnit XML report to this path")
 
     args = parser.parse_args(argv)
     try:
@@ -83,10 +125,10 @@ def main(argv: list[str] | None = None) -> int:
                 print("--min-steps must be >= 0", file=sys.stderr)
                 return 2
             results = evaluate_trace(load_trace(args.trace), args.min_steps, args.require)
-            return 0 if _print_results(results, args.json) else 1
+            return 0 if _report_results(results, args.json, args.junit_xml, "ark evaluate") else 1
 
         results = evaluate_policy(load_trace(args.trace), load_policy(args.policy_file))
-        return 0 if _print_results(results, args.json) else 1
+        return 0 if _report_results(results, args.json, args.junit_xml, "ark policy") else 1
     except (OSError, ValueError) as exc:
         print(f"ark: {exc}", file=sys.stderr)
         return 2
