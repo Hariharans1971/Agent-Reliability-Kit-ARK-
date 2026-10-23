@@ -28,7 +28,7 @@ ark policy artifacts/customer-support.jsonl --policy policies/customer-support.j
 | `max_total_tokens` | Bound the sum of counters recorded under `token_usage` |
 | `max_calls_per_event` | Bound the number of occurrences of each named event |
 
-The policy loader rejects unknown keys and invalid limits instead of silently ignoring them. Budget checks evaluate values already present in the trace; ARK does not infer missing metrics or calculate provider invoices.
+The policy loader rejects unknown keys and invalid limits instead of silently ignoring them. For token budgets, ARK uses an event's `token_usage.total_tokens` when present; otherwise it sums the event's recorded token counters. This avoids counting `total_tokens` plus its input/output breakdown twice. Budget checks evaluate values already present in the trace; ARK does not infer missing metrics or calculate provider invoices.
 
 ## Important limits
 
