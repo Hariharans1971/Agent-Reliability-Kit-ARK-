@@ -49,7 +49,10 @@ class PolicyTests(unittest.TestCase):
         }
         results = evaluate_policy(events, policy)
         self.assertEqual([item["name"] for item in results], [
-            "forbidden_event:refund_execution", "max_total_duration_ms", "max_total_tokens"
+            "forbidden_event:refund_execution",
+            "duration_coverage",
+            "max_total_duration_ms",
+            "max_total_tokens",
         ])
         self.assertFalse(any(item["passed"] for item in results))
 
@@ -60,24 +63,54 @@ class PolicyTests(unittest.TestCase):
         )
         self.assertFalse(results[0]["passed"])
 
-    def test_aggregate_total_tokens_is_not_double_counted(self):
-        events = [event("llm_call", token_usage={
-            "input_tokens": 40,
-            "output_tokens": 10,
-            "total_tokens": 50,
-        })]
-        results = evaluate_policy(events, {"max_total_tokens": 55})
-        self.assertTrue(results[0]["passed"], results)
-        self.assertIn("recorded token count 50", results[0]["message"])
+    def test_allowed_events_rejects_unexpected_action(self):
+        results = evaluate_policy(
+            [event("order_lookup"), event("send_external_email")],
+            {"allowed_events": ["order_lookup"]},
+        )
+        self.assertFalse(results[0]["passed"])
+        self.assertIn("send_external_email", results[0]["message"])
 
-    def test_component_tokens_are_summed_when_no_aggregate_exists(self):
+    def test_per_event_duration_budget_passes_and_fails(self):
+        events = [event("llm_call", duration_ms=12), event("lookup", duration_ms=3)]
+        passed = evaluate_policy(events, {"max_duration_ms_per_event": {"llm_call": 12}})
+        failed = evaluate_policy(events, {"max_duration_ms_per_event": {"llm_call": 10}})
+        self.assertTrue(passed[0]["passed"])
+        self.assertFalse(failed[0]["passed"])
+
+    def test_per_event_duration_budget_fails_when_metric_missing(self):
+        events = [event("llm_call", duration_ms=None)]
+        results = evaluate_policy(events, {"max_duration_ms_per_event": {"llm_call": 100}})
+        self.assertFalse(results[0]["passed"])
+        self.assertIn("cannot verify", results[0]["message"])
+
+    def test_total_duration_budget_fails_closed_on_missing_measurement(self):
+        results = evaluate_policy(
+            [event("first", duration_ms=3), event("second", duration_ms=None)],
+            {"max_total_duration_ms": 100},
+        )
+        self.assertFalse(results[0]["passed"])
+        self.assertFalse(results[1]["passed"])
+        self.assertIn("missing", results[0]["message"])
+
+    def test_per_event_token_budget_and_aggregate_precedence(self):
         events = [event("llm_call", token_usage={
-            "input_tokens": 40,
-            "output_tokens": 10,
+            "input_tokens": 40, "output_tokens": 10, "total_tokens": 50,
         })]
-        results = evaluate_policy(events, {"max_total_tokens": 55})
-        self.assertTrue(results[0]["passed"], results)
-        self.assertIn("recorded token count 50", results[0]["message"])
+        results = evaluate_policy(events, {
+            "max_total_tokens": 50,
+            "max_tokens_per_event": {"llm_call": 50},
+        })
+        self.assertTrue(all(item["passed"] for item in results), results)
+        self.assertIn("recorded 50 tokens", results[1]["message"])
+
+    def test_per_event_token_budget_fails_when_usage_missing(self):
+        results = evaluate_policy(
+            [event("llm_call", token_usage={})],
+            {"max_tokens_per_event": {"llm_call": 50}},
+        )
+        self.assertFalse(results[0]["passed"])
+        self.assertIn("cannot verify", results[0]["message"])
 
     def test_policy_loader_rejects_unknown_keys(self):
         with tempfile.TemporaryDirectory() as tmp:
@@ -91,6 +124,16 @@ class PolicyTests(unittest.TestCase):
             path = Path(tmp) / "policy.json"
             path.write_text(json.dumps({"min_events": 4, "max_events": 2}), encoding="utf-8")
             with self.assertRaisesRegex(ValueError, "min_events cannot"):
+                load_policy(path)
+
+    def test_policy_loader_rejects_impossible_allowlist_contract(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            path = Path(tmp) / "policy.json"
+            path.write_text(json.dumps({
+                "allowed_events": ["lookup"],
+                "required_events": ["refund"],
+            }), encoding="utf-8")
+            with self.assertRaisesRegex(ValueError, "excluded by allowed_events"):
                 load_policy(path)
 
     def test_policy_rejects_invalid_recorded_token_counts(self):
