@@ -53,6 +53,13 @@ python examples/customer_support_agent.py
 ark inspect artifacts/customer-support.jsonl
 ark evaluate artifacts/customer-support.jsonl --min-steps 3
 ark diff examples/sample-trace.jsonl examples/sample-trace.jsonl
+ark policy artifacts/customer-support.jsonl --policy policies/customer-support.json
+```
+
+To see the failure path, run this separately; it is expected to exit with code `1` because the sample trace contains event names outside the restrictive allowlist:
+
+```bash
+ark policy examples/sample-trace.jsonl --policy policies/reject-sample.json
 ```
 
 ## 60-second example
