@@ -18,7 +18,8 @@ The roadmap is community input, not a promise that every feature will ship.
 - [x] JUnit XML output for policy and evaluation checks
 - [x] Expected-pass and expected-rejection policy checks in GitHub Actions
 - [x] Optional path-focused nested JSON diff output
-- [ ] Exportable HTML trace viewer
+- [x] Offline single-file HTML viewer for local JSONL traces
+- [ ] CLI-exported self-contained report for sharing
 
 ## Phase 3 — optional integrations
 - [ ] LangChain callback adapter
