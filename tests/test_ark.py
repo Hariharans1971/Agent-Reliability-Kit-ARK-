@@ -33,6 +33,38 @@ class ARKTests(unittest.TestCase):
         b = [{"kind": "tool", "name": "lookup", "inputs": {}, "outputs": {"ok": False}}, {"kind": "response", "name": "reply"}]
         self.assertEqual([item["status"] for item in diff_traces(a, b)], ["changed", "added"])
 
+    def test_diff_ignores_nested_request_id_without_mutating_input(self):
+        expected = [{
+            "kind": "tool", "name": "lookup",
+            "inputs": {"request_id": "req-a", "customer": {"id": 7}},
+            "outputs": {"ok": True},
+        }]
+        actual = [{
+            "kind": "tool", "name": "lookup",
+            "inputs": {"request_id": "req-b", "customer": {"id": 7}},
+            "outputs": {"ok": True},
+        }]
+        result = diff_traces(expected, actual, ignore_paths=["inputs.request_id"])
+        self.assertEqual(result[0]["status"], "same")
+        self.assertEqual(expected[0]["inputs"]["request_id"], "req-a")
+        self.assertEqual(actual[0]["inputs"]["request_id"], "req-b")
+
+    def test_diff_ignores_list_index_path(self):
+        expected = [{
+            "kind": "llm", "name": "completion", "inputs": {},
+            "outputs": {"messages": [{"trace_id": "a", "text": "hello"}]},
+        }]
+        actual = [{
+            "kind": "llm", "name": "completion", "inputs": {},
+            "outputs": {"messages": [{"trace_id": "b", "text": "hello"}]},
+        }]
+        result = diff_traces(expected, actual, ignore_paths=["outputs.messages.0.trace_id"])
+        self.assertEqual(result[0]["status"], "same")
+
+    def test_diff_rejects_empty_ignore_path(self):
+        with self.assertRaisesRegex(ValueError, "non-empty dotted paths"):
+            diff_traces([], [], ignore_paths=[""])
+
     def test_evaluation_required_event(self):
         results = evaluate_trace([{"name": "lookup"}], min_steps=1, required_names=["lookup", "refund"])
         self.assertTrue(results[0]["passed"])
