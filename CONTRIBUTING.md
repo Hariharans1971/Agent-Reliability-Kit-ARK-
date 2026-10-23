@@ -16,7 +16,7 @@ Thank you for helping make agent workflows easier to inspect and test.
 2. Fork the repository and create a focused branch.
 3. Add or update tests for behavioral changes.
 4. Run `python -m unittest discover -s tests -v`.
-5. Run `ruff check ark tests` (install Ruff with `python -m pip install ruff` if needed).
+5. Run `ruff check --select E4,E7,E9,F,I,RUF022,SIM117 ark tests` (install Ruff with `python -m pip install ruff` if needed).
 6. Open a pull request describing the problem, solution, and validation.
 
 ## Project expectations
