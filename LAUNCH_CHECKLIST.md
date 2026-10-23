@@ -43,6 +43,8 @@
 - [x] Align `CHANGELOG.md` and staged v0.1.0 alpha release notes with package version 0.1.0.
 - [x] Add action branding metadata and an automated, validation-gated release workflow.
 - [x] Add regression coverage for Marketplace metadata and staged release artifacts.
+- [x] Validate every GitHub Actions workflow's YAML syntax/structure in CI, including the release workflow.
+- [x] Pin the README composite-action example to a reviewed full commit SHA.
 - [ ] Run Actions → Release manually to create the tag and public alpha release with built assets.
 - [ ] Review the resulting release page, uploaded assets, and SHA256SUMS.
 - [ ] Publish the action to GitHub Marketplace after accepting the developer agreement and selecting categories.
