@@ -33,6 +33,12 @@ def main(argv: list[str] | None = None) -> int:
     diff_parser = sub.add_parser("diff", help="compare two traces")
     diff_parser.add_argument("expected")
     diff_parser.add_argument("actual")
+    diff_parser.add_argument(
+        "--ignore-path",
+        action="append",
+        default=[],
+        help="ignore a dotted path in compared event fields; repeat for multiple paths",
+    )
 
     eval_parser = sub.add_parser("evaluate", help="run basic deterministic checks")
     eval_parser.add_argument("trace")
@@ -58,7 +64,11 @@ def main(argv: list[str] | None = None) -> int:
 
         if args.command == "diff":
             differences = [
-                item for item in diff_traces(load_trace(args.expected), load_trace(args.actual))
+                item for item in diff_traces(
+                    load_trace(args.expected),
+                    load_trace(args.actual),
+                    ignore_paths=args.ignore_path,
+                )
                 if item["status"] != "same"
             ]
             print(f"Differences: {len(differences)}")
