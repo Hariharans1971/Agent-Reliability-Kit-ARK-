@@ -134,7 +134,7 @@ Replace `@main` with a reviewed release tag or commit SHA for production workflo
 - [x] Declarative JSON policies for allowlisted/required/forbidden events, event/call limits, and total/per-step duration/token budgets
 - [x] Reusable composite GitHub Action for policy enforcement
 - [x] Best-effort recursive key redaction
-- [x] Unit tests and GitHub Actions CI
+- [x] Unit tests and GitHub Actions CI, including expected policy rejection
 - [ ] Golden-trace fixtures and ignore-path rules
 - [x] Per-event duration and token budgets with missing-metric failure
 - [ ] JUnit-compatible CI output
