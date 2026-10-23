@@ -3,6 +3,7 @@ import io
 import json
 import tempfile
 import unittest
+import xml.etree.ElementTree as ET
 from pathlib import Path
 
 from ark import TraceRecorder
@@ -47,6 +48,41 @@ class PolicyCliTests(unittest.TestCase):
                 code = main(["diff", str(trace), str(trace), "--ignore-path", "inputs..id"])
             self.assertEqual(code, 2)
             self.assertIn("empty path segment", output.getvalue())
+
+    def test_policy_command_writes_junit_failure_report(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            trace = self._make_trace(tmp, "unexpected_action")
+            policy = self._make_policy(tmp, {"allowed_events": ["lookup"]})
+            report = Path(tmp) / "reports" / "policy.xml"
+            with contextlib.redirect_stdout(io.StringIO()):
+                code = main([
+                    "policy", str(trace), "--policy", str(policy),
+                    "--junit-xml", str(report),
+                ])
+            self.assertEqual(code, 1)
+            self.assertTrue(report.is_file())
+            root = ET.parse(report).getroot()
+            self.assertEqual(root.tag, "testsuite")
+            self.assertEqual(root.attrib["tests"], "1")
+            self.assertEqual(root.attrib["failures"], "1")
+            failure = root.find("./testcase/failure")
+            self.assertIsNotNone(failure)
+            self.assertIn("unexpected_action", failure.attrib["message"])
+            self.assertIn("unexpected_action", failure.text or "")
+
+    def test_evaluate_command_writes_junit_success_report(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            trace = self._make_trace(tmp, "lookup")
+            report = Path(tmp) / "evaluate.xml"
+            with contextlib.redirect_stdout(io.StringIO()):
+                code = main([
+                    "evaluate", str(trace), "--min-steps", "1",
+                    "--require", "lookup", "--junit-xml", str(report),
+                ])
+            self.assertEqual(code, 0)
+            root = ET.parse(report).getroot()
+            self.assertEqual(root.attrib["failures"], "0")
+            self.assertEqual(root.attrib["tests"], "2")
 
     def test_policy_command_returns_zero_for_allowed_trace(self):
         with tempfile.TemporaryDirectory() as tmp:
