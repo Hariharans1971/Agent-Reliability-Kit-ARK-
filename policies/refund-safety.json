@@ -1,0 +1,11 @@
+{
+  "required_events": [
+    "order_lookup",
+    "refund_eligibility"
+  ],
+  "max_calls_per_event": {
+    "refund_submit": 1
+  },
+  "max_total_duration_ms": 500,
+  "max_total_tokens": 2000
+}
