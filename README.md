@@ -4,7 +4,7 @@
 
 # Agent Reliability Kit (ARK)
 
-### Record. Inspect. Compare. Trust your agent changes.
+### Record. Inspect. Compare. Gate.
 
 [![Tests](https://github.com/Hariharans1971/Agent-Reliability-Kit-ARK-/actions/workflows/tests.yml/badge.svg)](https://github.com/Hariharans1971/Agent-Reliability-Kit-ARK-/actions/workflows/tests.yml)
 [![Python 3.10+](https://img.shields.io/badge/Python-3.10%2B-3776AB?logo=python&logoColor=white)](https://python.org)
@@ -13,7 +13,7 @@
 
 **AI agents are easy to demo. They are harder to trust.**
 
-A local-first, framework-agnostic Python toolkit for recording AI-agent workflows as readable JSONL traces and catching behavioral regressions between runs.
+A local-first Python toolkit for recording AI-agent workflows as readable JSONL traces and enforcing explicit CI contracts: required/forbidden actions, execution budgets, and behavioral diffs.
 
 </div>
 
@@ -28,7 +28,7 @@ Agent workflows can fail in subtle ways: a tool receives the wrong arguments, a 
 | **Record** | Capture tool inputs/outputs, decisions, durations, and token counters |
 | **Inspect** | Summarize a trace from the command line |
 | **Diff** | Compare runs while ignoring timestamps and generated IDs |
-| **Evaluate** | Run deterministic checks locally or in CI |
+| **Evaluate** | Run deterministic checks locally or in CI |\n| **Gate** | Enforce JSON policy contracts for required/forbidden events, call limits, latency, and token budgets |
 | **Privacy-first** | Store JSONL locally; optional best-effort key redaction |
 | **Framework-agnostic** | Instrument ordinary Python functions; keep integrations optional |
 
@@ -102,7 +102,7 @@ ARK does not execute an LLM or transmit trace data by itself. A passing check me
 | `ark evaluate TRACE` | Run baseline checks |
 | `ark evaluate TRACE --min-steps 3` | Require at least three events |
 | `ark evaluate TRACE --require order_lookup` | Require a named event |
-| `ark evaluate TRACE --json` | Emit machine-readable check results |
+| `ark evaluate TRACE --json` | Emit machine-readable baseline checks |\n| `ark policy TRACE --policy POLICY.json` | Enforce required/forbidden events and recorded metric budgets |\n| `ark policy TRACE --policy POLICY.json --json` | Emit machine-readable policy results |
 
 **Exit codes:** `0` checks passed, `1` regression/check failed, `2` invalid input or unreadable trace.
 
