@@ -219,6 +219,8 @@ class ARKTests(unittest.TestCase):
         self.assertIn("python -m build --sdist --wheel", release_workflow)
         self.assertIn("sha256sum *.whl *.tar.gz > SHA256SUMS", release_workflow)
         self.assertIn("gh release create", release_workflow)
+        self.assertIn("--draft", release_workflow)
+        self.assertIn("--prerelease", release_workflow)
 
     def test_invalid_jsonl_has_line_number(self):
         with tempfile.TemporaryDirectory() as tmp:
