@@ -15,8 +15,8 @@ jobs:
       matrix:
         python-version: ["3.10", "3.11", "3.12"]
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
         with:
           python-version: ${{ matrix.python-version }}
       - name: Install package
@@ -30,3 +30,9 @@ jobs:
           ark diff examples/sample-trace.jsonl examples/sample-trace.jsonl
           python examples/customer_support_agent.py
           ark policy artifacts/customer-support.jsonl --policy policies/customer-support.json
+      - name: Smoke-test composite GitHub Action
+        uses: ./
+        with:
+          trace: artifacts/customer-support.jsonl
+          policy: policies/customer-support.json
+          python-version: ${{ matrix.python-version }}
