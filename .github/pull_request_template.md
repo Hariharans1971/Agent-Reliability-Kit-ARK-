@@ -6,6 +6,7 @@
 
 ## Validation
 - [ ] `python -m unittest discover -s tests -v`
+- [ ] `ruff check ark tests`
 - [ ] CLI smoke tests run if relevant
 - [ ] Documentation updated as needed
 - [ ] No secrets or production traces included
