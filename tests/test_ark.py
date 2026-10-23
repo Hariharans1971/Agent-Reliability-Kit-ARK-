@@ -191,6 +191,35 @@ class ARKTests(unittest.TestCase):
             with self.subTest(forbidden=forbidden):
                 self.assertNotIn(forbidden.lower(), html.lower())
 
+    def test_marketplace_metadata_and_release_bundle_are_prepared(self):
+        root = Path(__file__).resolve().parents[1]
+        action = (root / "action.yml").read_text(encoding="utf-8")
+        release_workflow = (root / ".github" / "workflows" / "release.yml").read_text(encoding="utf-8")
+        release_notes = root / "docs" / "releases" / "v0.1.0.md"
+        project_metadata = (root / "pyproject.toml").read_text(encoding="utf-8")
+        release_checklist = (root / "docs" / "RELEASING.md").read_text(encoding="utf-8")
+
+        self.assertIn("branding:", action)
+        self.assertIn("  icon: shield", action)
+        self.assertIn("  color: blue", action)
+        self.assertRegex(project_metadata, r'(?m)^version = "0\\.1\\.0"
+        with tempfile.TemporaryDirectory() as tmp:
+            target = Path(tmp) / "bad.jsonl"
+            target.write_text('not-json\n', encoding="utf-8")
+            with self.assertRaisesRegex(ValueError, ":1:"):
+                load_trace(target)
+
+
+if __name__ == "__main__":
+    unittest.main()
+)
+        self.assertTrue(release_notes.is_file())
+        self.assertIn("Release Action", release_checklist)
+        self.assertIn("workflow_dispatch:", release_workflow)
+        self.assertIn("python -m build --sdist --wheel", release_workflow)
+        self.assertIn("sha256sum *.whl *.tar.gz > SHA256SUMS", release_workflow)
+        self.assertIn("gh release create", release_workflow)
+
     def test_invalid_jsonl_has_line_number(self):
         with tempfile.TemporaryDirectory() as tmp:
             target = Path(tmp) / "bad.jsonl"
