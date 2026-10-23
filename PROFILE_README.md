@@ -11,9 +11,12 @@ I’m a 2026 B.Tech Computer Science and Engineering (AI & ML) graduate based in
 ## Featured proof of work
 
 ### 1. Agent Reliability Kit (ARK) — AI-agent policy checks for CI
+
+[![ARK stars](https://img.shields.io/github/stars/Hariharans1971/Agent-Reliability-Kit-ARK-?style=social)](https://github.com/Hariharans1971/Agent-Reliability-Kit-ARK-/stargazers) [![ARK CI](https://github.com/Hariharans1971/Agent-Reliability-Kit-ARK-/actions/workflows/tests.yml/badge.svg)](https://github.com/Hariharans1971/Agent-Reliability-Kit-ARK-/actions)
 A local-first Python toolkit that records agent workflows as JSONL traces and enforces policies for allowed/required/forbidden events, call counts, and total/per-event duration/token budgets. It also supports nested path diffs, dotted ignore paths, JUnit XML reports, strict trace validation, and a reusable GitHub Action.
 
 - [Repository](https://github.com/Hariharans1971/Agent-Reliability-Kit-ARK-)
+- [Try the offline trace viewer](https://portfolio1-tau-sandy.vercel.app/ark-trace-viewer.html)
 - [Architecture and limitations](https://github.com/Hariharans1971/Agent-Reliability-Kit-ARK-/blob/main/docs/ARCHITECTURE.md)
 - [Policy contracts](https://github.com/Hariharans1971/Agent-Reliability-Kit-ARK-/blob/main/docs/POLICY_CONTRACTS.md)
 - [CI checks](https://github.com/Hariharans1971/Agent-Reliability-Kit-ARK-/actions)
