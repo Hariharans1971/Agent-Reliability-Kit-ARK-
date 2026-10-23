@@ -201,6 +201,7 @@ Trace files may contain prompts, tool arguments, identifiers, or sensitive custo
 - [Contribution guide](CONTRIBUTING.md)
 - [Security policy](SECURITY.md)
 - [Citation metadata](CITATION.cff)
+- [Launch and adoption plan](docs/LAUNCH_PLAN.md)
 
 ## Project status
 
