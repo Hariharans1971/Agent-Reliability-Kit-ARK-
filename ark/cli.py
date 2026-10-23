@@ -13,6 +13,14 @@ from .io import load_trace
 from .policy import evaluate_policy, load_policy
 
 
+def _event_token_count(event: dict) -> int:
+    """Count recorded tokens without adding an aggregate to its subtotals."""
+    usage = event.get("token_usage") or {}
+    if "total_tokens" in usage:
+        return usage["total_tokens"]
+    return sum(usage.values())
+
+
 def _print_results(results: list[dict], as_json: bool = False) -> bool:
     if as_json:
         print(json.dumps(results, indent=2))
@@ -99,7 +107,7 @@ def main(argv: list[str] | None = None) -> int:
             events = load_trace(args.trace)
             kinds = Counter(event.get("kind", "unknown") for event in events)
             duration = sum(event.get("duration_ms") or 0 for event in events)
-            tokens = sum(sum((event.get("token_usage") or {}).values()) for event in events)
+            tokens = sum(_event_token_count(event) for event in events)
             print(f"Trace: {args.trace}\nEvents: {len(events)}\nKinds: {dict(kinds)}")
             print(f"Recorded duration: {duration:.2f} ms\nRecorded tokens: {tokens}")
             return 0

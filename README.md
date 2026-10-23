@@ -145,7 +145,7 @@ Replace `@main` with a reviewed release tag or commit SHA for production workflo
 - [x] Unit tests and GitHub Actions CI, including expected policy rejection
 - [ ] Golden-trace fixture packs and comparison presets
 - [x] Per-event duration and token budgets with missing-metric failure
-- [ ] JUnit-compatible CI output
+- [x] JUnit XML output for policy and evaluation checks
 - [ ] Optional LangChain callback adapter
 - [ ] Optional OpenAI-compatible API adapter
 - [ ] Exportable HTML trace viewer
@@ -162,12 +162,10 @@ For a code change:
 python -m unittest discover -s tests -v
 ```
 
-### Good first contributions
+### Open contribution opportunities
 
-- [Improve malformed trace validation (#3)](https://github.com/Hariharans1971/Agent-Reliability-Kit-ARK-/issues/3) — focused standard-library task.
-- [Add path-focused nested JSON diff output (#6)](https://github.com/Hariharans1971/Agent-Reliability-Kit-ARK-/issues/6) — show exactly which fields changed.
-- [Validate ARK from a separate consumer repository (#5)](https://github.com/Hariharans1971/Agent-Reliability-Kit-ARK-/issues/5) — prove the action works outside its own repository.
-- [Export JUnit XML (#4)](https://github.com/Hariharans1971/Agent-Reliability-Kit-ARK-/issues/4) — improve CI reporting.
+- [Add path-focused nested JSON diff output (#6)](https://github.com/Hariharans1971/Agent-Reliability-Kit-ARK-/issues/6) — show exactly which nested fields changed.
+- [Validate ARK from a separate consumer repository (#5)](https://github.com/Hariharans1971/Agent-Reliability-Kit-ARK-/issues/5) — verify how the action behaves from a separate project.
 
 Please comment on an issue before starting larger changes so we can agree on a small, reviewable scope.
 

@@ -9,11 +9,14 @@ The roadmap is community input, not a promise that every feature will ship.
 - [x] Reusable GitHub Action for CI policy enforcement
 - [x] Best-effort recursive key redaction
 - [x] Unit tests and CI matrix
+- [x] Line-specific trace schema validation for event types, durations, and token counters
 
 ## Phase 2 — stronger regression checks
-- [x] Dotted ignore paths for dynamic values during trace comparison\n- [ ] Golden-trace fixture packs and comparison presets
+- [x] Dotted ignore paths for dynamic values during trace comparison
+- [ ] Golden-trace fixture packs and comparison presets
 - [x] Per-event duration/token budgets with explicit missing-metric failures
 - [x] JUnit XML output for policy and evaluation checks
+- [x] Expected-pass and expected-rejection policy checks in GitHub Actions
 - [ ] Better nested JSON diff output
 - [ ] Exportable HTML trace viewer
 

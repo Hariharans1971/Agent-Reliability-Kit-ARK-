@@ -84,6 +84,23 @@ class PolicyCliTests(unittest.TestCase):
             self.assertEqual(root.attrib["failures"], "0")
             self.assertEqual(root.attrib["tests"], "2")
 
+    def test_inspect_does_not_double_count_aggregate_tokens(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            trace = TraceRecorder("inspect-test")
+            trace.record(
+                "llm",
+                "completion",
+                inputs={},
+                outputs={"ok": True},
+                token_usage={"input_tokens": 10, "output_tokens": 5, "total_tokens": 15},
+            )
+            path = trace.save(Path(tmp) / "trace.jsonl")
+            output = io.StringIO()
+            with contextlib.redirect_stdout(output):
+                code = main(["inspect", str(path)])
+            self.assertEqual(code, 0)
+            self.assertIn("Recorded tokens: 15", output.getvalue())
+
     def test_policy_command_returns_zero_for_allowed_trace(self):
         with tempfile.TemporaryDirectory() as tmp:
             trace = self._make_trace(tmp, "lookup")
