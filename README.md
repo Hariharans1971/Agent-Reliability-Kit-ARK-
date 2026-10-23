@@ -110,14 +110,14 @@ ARK includes a composite action so a repository can fail CI when a recorded agen
   run: python your_agent_test.py
 
 - name: Enforce agent execution contract
-  uses: Hariharans1971/Agent-Reliability-Kit-ARK-@main
+  uses: Hariharans1971/Agent-Reliability-Kit-ARK-@765abad7b114f6d7ba25066f931f529dfd41c526
   with:
     trace: artifacts/agent-trace.jsonl
     policy: policies/agent-policy.json
     python-version: "3.12"
 ```
 
-Replace `@main` with a reviewed release tag or commit SHA for production workflows. The trace and policy paths are resolved from the consuming repository's workspace.
+This example pins a reviewed commit SHA rather than tracking a moving branch. When upgrading, review the change and update the SHA (or use a signed/reviewed release tag). The trace and policy paths are resolved from the consuming repository's workspace. The same pinned revision is exercised by the [consumer-style CI workflow](.github/workflows/consumer-smoke.yml).
 
 ## CLI reference
 
