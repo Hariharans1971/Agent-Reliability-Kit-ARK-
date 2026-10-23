@@ -121,7 +121,9 @@ Replace `@main` with a reviewed release tag or commit SHA for production workflo
 | `ark evaluate TRACE` | Run baseline checks |
 | `ark evaluate TRACE --min-steps 3` | Require at least three events |
 | `ark evaluate TRACE --require order_lookup` | Require a named event |
-| `ark evaluate TRACE --json` | Emit machine-readable baseline checks |\n| `ark policy TRACE --policy POLICY.json` | Enforce required/forbidden events and recorded metric budgets |\n| `ark policy TRACE --policy POLICY.json --json` | Emit machine-readable policy results |
+| `ark evaluate TRACE --json` | Emit machine-readable baseline checks |
+| `ark policy TRACE --policy POLICY.json` | Enforce required/forbidden events and recorded metric budgets |
+| `ark policy TRACE --policy POLICY.json --json` | Emit machine-readable policy results |
 
 **Exit codes:** `0` checks passed, `1` regression/check failed, `2` invalid input or unreadable trace.
 
@@ -156,7 +158,7 @@ python -m unittest discover -s tests -v
 
 - [Improve malformed trace validation (#3)](https://github.com/Hariharans1971/Agent-Reliability-Kit-ARK-/issues/3) — focused standard-library task.
 - [Ignore selected JSON paths in diffs (#1)](https://github.com/Hariharans1971/Agent-Reliability-Kit-ARK-/issues/1) — make regression comparisons less noisy.
-- [Add latency and token budgets (#2)](https://github.com/Hariharans1971/Agent-Reliability-Kit-ARK-/issues/2) — add deterministic CI checks.
+- [Add per-step latency and token budgets (#2)](https://github.com/Hariharans1971/Agent-Reliability-Kit-ARK-/issues/2) — identify expensive individual steps.
 - [Export JUnit XML (#4)](https://github.com/Hariharans1971/Agent-Reliability-Kit-ARK-/issues/4) — improve CI reporting.
 
 Please comment on an issue before starting larger changes so we can agree on a small, reviewable scope.
