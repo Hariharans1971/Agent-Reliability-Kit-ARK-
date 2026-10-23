@@ -40,6 +40,22 @@ class PolicyCliTests(unittest.TestCase):
             self.assertEqual(code, 0)
             self.assertIn("Differences: 0", output.getvalue())
 
+    def test_diff_cli_shows_nested_changed_paths(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            left = TraceRecorder("left")
+            left.record("llm", "answer", inputs={}, outputs={"answer": {"text": "old"}})
+            right = TraceRecorder("right")
+            right.record("llm", "answer", inputs={}, outputs={"answer": {"text": "new", "score": 1}})
+            expected = left.save(Path(tmp) / "expected.jsonl")
+            actual = right.save(Path(tmp) / "actual.jsonl")
+            output = io.StringIO()
+            with contextlib.redirect_stdout(output):
+                code = main(["diff", str(expected), str(actual), "--show-paths"])
+            self.assertEqual(code, 1)
+            self.assertIn("outputs.answer.text", output.getvalue())
+            self.assertIn("outputs.answer.score", output.getvalue())
+            self.assertIn("ADDED", output.getvalue())
+
     def test_diff_cli_reports_invalid_ignore_path(self):
         with tempfile.TemporaryDirectory() as tmp:
             trace = self._make_trace(tmp, "lookup")
