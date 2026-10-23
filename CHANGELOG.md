@@ -7,6 +7,7 @@ Notable changes are recorded here. Features under Unreleased are merged on `main
 - Added per-event duration and token policy budgets with explicit failures for missing selected metrics.
 - Added strict trace-event schema validation with path- and line-specific malformed-input errors.
 - Added dotted ignore paths for nested dictionary keys and indexed list values in trace comparisons.
+- Added opt-in nested JSON path reports for added, removed, and changed fields.
 - Added JUnit XML output for `ark evaluate` and `ark policy`, with tests for passing and failing reports.
 - Added consumer-style GitHub Actions checks for the composite action's passing and rejection paths.
 - Corrected aggregate token accounting so recorded `total_tokens` is not added to its own input/output subtotals.
