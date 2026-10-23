@@ -60,6 +60,25 @@ class PolicyTests(unittest.TestCase):
         )
         self.assertFalse(results[0]["passed"])
 
+    def test_aggregate_total_tokens_is_not_double_counted(self):
+        events = [event("llm_call", token_usage={
+            "input_tokens": 40,
+            "output_tokens": 10,
+            "total_tokens": 50,
+        })]
+        results = evaluate_policy(events, {"max_total_tokens": 55})
+        self.assertTrue(results[0]["passed"], results)
+        self.assertIn("recorded token count 50", results[0]["message"])
+
+    def test_component_tokens_are_summed_when_no_aggregate_exists(self):
+        events = [event("llm_call", token_usage={
+            "input_tokens": 40,
+            "output_tokens": 10,
+        })]
+        results = evaluate_policy(events, {"max_total_tokens": 55})
+        self.assertTrue(results[0]["passed"], results)
+        self.assertIn("recorded token count 50", results[0]["message"])
+
     def test_policy_loader_rejects_unknown_keys(self):
         with tempfile.TemporaryDirectory() as tmp:
             path = Path(tmp) / "policy.json"
