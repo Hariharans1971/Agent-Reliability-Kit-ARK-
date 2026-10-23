@@ -65,6 +65,56 @@ class ARKTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "non-empty dotted paths"):
             diff_traces([], [], ignore_paths=[""])
 
+    def test_trace_loader_rejects_invalid_optional_field_types(self):
+        valid = {
+            "event_id": "evt-1",
+            "run_id": "run-1",
+            "timestamp": "2026-01-01T00:00:00+00:00",
+            "kind": "tool",
+            "name": "lookup",
+            "inputs": {},
+            "outputs": {},
+            "duration_ms": 2,
+            "token_usage": {"total_tokens": 3},
+            "metadata": {},
+        }
+        invalid_updates = [
+            ({"name": ""}, "name must be a non-empty string"),
+            ({"inputs": []}, "inputs must be a JSON object"),
+            ({"metadata": []}, "metadata must be a JSON object"),
+            ({"duration_ms": -1}, "duration_ms must be a finite non-negative number"),
+            ({"duration_ms": True}, "duration_ms must be a finite non-negative number"),
+            ({"token_usage": "many"}, "token_usage must be a JSON object"),
+            ({"token_usage": {"total_tokens": -1}}, "token_usage counters"),
+            ({"token_usage": {"total_tokens": 1.5}}, "token_usage counters"),
+        ]
+        with tempfile.TemporaryDirectory() as tmp:
+            target = Path(tmp) / "invalid-events.jsonl"
+            for changes, expected_message in invalid_updates:
+                event = {**valid, **changes}
+                target.write_text(__import__("json").dumps(event) + "\\n", encoding="utf-8")
+                with self.subTest(changes=changes):
+                    with self.assertRaisesRegex(ValueError, expected_message):
+                        load_trace(target)
+
+    def test_trace_loader_validates_second_line_with_line_number(self):
+        valid = {
+            "event_id": "evt-1",
+            "run_id": "run-1",
+            "timestamp": "2026-01-01T00:00:00+00:00",
+            "kind": "tool",
+            "name": "lookup",
+        }
+        invalid = {**valid, "duration_ms": float("inf")}
+        with tempfile.TemporaryDirectory() as tmp:
+            target = Path(tmp) / "trace.jsonl"
+            target.write_text(
+                __import__("json").dumps(valid) + "\\n" + __import__("json").dumps(invalid) + "\\n",
+                encoding="utf-8",
+            )
+            with self.assertRaisesRegex(ValueError, ":2:"):
+                load_trace(target)
+
     def test_evaluation_required_event(self):
         results = evaluate_trace([{"name": "lookup"}], min_steps=1, required_names=["lookup", "refund"])
         self.assertTrue(results[0]["passed"])
