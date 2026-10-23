@@ -17,6 +17,7 @@
 - [x] Package metadata, classifiers, and project links improved
 - [x] Weekly Dependabot updates configured for Python packaging and GitHub Actions
 - [x] Profile/project README and portfolio project links refreshed
+- [x] Offline JSONL trace viewer added with no third-party runtime dependencies
 - [x] Portfolio live-site verification passing
 
 ## Recommended profile settings
