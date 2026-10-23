@@ -2,7 +2,7 @@ import tempfile
 import unittest
 from pathlib import Path
 
-from ark import TraceRecorder, load_trace, diff_traces, evaluate_trace, redact
+from ark import TraceRecorder, diff_traces, evaluate_trace, load_trace, redact
 
 
 class ARKTests(unittest.TestCase):
@@ -147,9 +147,10 @@ class ARKTests(unittest.TestCase):
             for changes, expected_message in invalid_updates:
                 event = {**valid, **changes}
                 target.write_text(__import__("json").dumps(event) + "\n", encoding="utf-8")
-                with self.subTest(changes=changes):
-                    with self.assertRaisesRegex(ValueError, expected_message):
-                        load_trace(target)
+                with self.subTest(changes=changes), self.assertRaisesRegex(
+                    ValueError, expected_message
+                ):
+                    load_trace(target)
 
     def test_trace_loader_validates_second_line_with_line_number(self):
         valid = {
