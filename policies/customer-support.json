@@ -1,0 +1,17 @@
+{
+  "min_events": 3,
+  "max_events": 10,
+  "required_events": [
+    "order_lookup",
+    "refund_eligibility",
+    "customer_reply"
+  ],
+  "forbidden_events": [
+    "refund_execution"
+  ],
+  "max_total_duration_ms": 100,
+  "max_total_tokens": 2000,
+  "max_calls_per_event": {
+    "order_lookup": 1
+  }
+}
