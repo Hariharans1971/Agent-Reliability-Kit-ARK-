@@ -8,14 +8,6 @@ on:
         required: true
         type: string
         default: "0.1.0"
-      release_type:
-        description: "Choose alpha for the first public pre-release, or stable after review."
-        required: true
-        type: choice
-        options:
-          - alpha
-          - stable
-        default: alpha
 
 permissions:
   contents: read
@@ -35,6 +27,10 @@ jobs:
     steps:
       - name: Check out source
         uses: actions/checkout@v7
+      - name: Set up Python
+        uses: actions/setup-python@v7
+        with:
+          python-version: ${{ matrix.python-version }}
       - name: Require the default branch and matching release metadata
         env:
           RELEASE_VERSION: ${{ inputs.version }}
@@ -64,10 +60,6 @@ jobs:
               raise SystemExit(f"Release notes are missing: {notes}")
           print(f"Release metadata validated for v{version}.")
           PY
-      - name: Set up Python
-        uses: actions/setup-python@v7
-        with:
-          python-version: ${{ matrix.python-version }}
       - name: Install package and Ruff
         run: |
           python -m pip install --upgrade pip
@@ -164,7 +156,6 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           RELEASE_VERSION: ${{ inputs.version }}
-          RELEASE_TYPE: ${{ inputs.release_type }}
         shell: bash
         run: |
           set -Eeuo pipefail
@@ -187,16 +178,11 @@ jobs:
             echo "::error::Expected wheel, source distribution, and checksums."
             exit 1
           fi
-          title="Agent Reliability Kit ${tag}"
-          flags=()
-          if [ "$RELEASE_TYPE" = "alpha" ]; then
-            title="${title} — Alpha"
-            flags+=(--prerelease)
-          fi
+          title="Agent Reliability Kit ${tag} — Alpha"
           gh release create "$tag" "${assets[@]}" \
             --title "$title" \
             --notes-file "docs/releases/${tag}.md" \
             --target "$GITHUB_SHA" \
-            "${flags[@]}"
+            --prerelease
           echo "Published ${tag} from $GITHUB_SHA."
           echo "Review release assets, checksums, and Marketplace settings before announcing."
