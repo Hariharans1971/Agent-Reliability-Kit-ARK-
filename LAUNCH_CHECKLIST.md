@@ -19,6 +19,14 @@
 - [x] Profile/project README and portfolio project links refreshed
 - [x] Portfolio live-site verification passing
 
+## Recommended profile settings
+
+- **Display name:** `Hariharan S.`
+- **Bio:** `Python · Backend APIs · Applied AI | CSE (AI & ML), 2026 | Building agent reliability tools`
+- **Website:** `https://portfolio1-tau-sandy.vercel.app/`
+- **Pinned repositories:** ARK, `document_analysis`, `portfolio`, and the strongest reproducible project with a clear README and passing tests.
+- **Profile README:** copy `PROFILE_README.md` into a new public repository named exactly `Hariharans1971`. GitHub only renders it at the top of your profile when that repository name matches the username.
+
 ## Complete manually in GitHub settings
 - [ ] Optional branding cleanup: rename `Agent-Reliability-Kit-ARK-` to `agent-reliability-kit` in Settings → General; this changes the canonical URL, so update links and `uses:` examples afterward.
 - [ ] Set the repository About description to: "Local-first policy-as-code guardrails and JSONL trace diffs for AI-agent workflows."
