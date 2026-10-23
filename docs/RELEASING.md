@@ -7,7 +7,7 @@ Use this checklist before creating a public GitHub release or publishing the act
 1. Confirm the release is intended to be `v0.1.0` and package metadata in `pyproject.toml` reports `0.1.0`.
 2. Review current open issues and the explicit limitations in `docs/ARCHITECTURE.md`.
 3. Verify CI is green on the exact `main` commit being released: Ruff, Python 3.10/3.11/3.12 tests, CLI smoke tests, expected policy-rejection tests, composite-action smoke tests, and wheel build/install.
-4. From **Actions → Release → Run workflow**, choose version `0.1.0` and release type `alpha`. The workflow re-runs verification, builds the source distribution and wheel, creates `SHA256SUMS`, and publishes a GitHub pre-release with the assets attached.
+4. From **Actions → Release → Run workflow**, choose version `0.1.0`. This workflow is intentionally alpha-only: it re-runs verification, builds the source distribution and wheel, creates `SHA256SUMS`, and creates a **draft pre-release** with the assets attached. It does not publish the release publicly.
 5. Open the draft under Releases → Drafts. Inspect the tag, release notes, wheel/source assets, and checksums; download and verify them before publishing.
 6. In the draft release form, select **Publish this Action to the GitHub Marketplace**, choose the primary category, keep **This is a pre-release** selected, then publish only after GitHub's metadata checks show no warnings.
 7. If the workflow fails, fix the failure and rerun it. Do not bypass its checks or manually tag a different commit.
