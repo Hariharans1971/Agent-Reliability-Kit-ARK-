@@ -1,43 +1,83 @@
-<!-- Profile README draft. Activate by creating a PUBLIC repository named exactly Hariharans1971 and placing this content in its root README.md. -->
+![Hariharan S. — Python, Backend & Applied AI](https://raw.githubusercontent.com/Hariharans1971/hariharansuresh1971-dotcom/main/assets/github-profile-banner.svg)
 
-<div align="center">
+# Hariharan S. — Python, Backend & Applied AI
 
-# Hi, I'm Hariharan 👋
-### AI Engineer in progress · Python · Full-Stack · Applied AI
+I’m a 2026 B.Tech Computer Science and Engineering (AI & ML) graduate based in Chennai, India. I build practical Python applications and am developing toward backend and AI systems engineering—with a focus on APIs, data workflows, retrieval-augmented generation (RAG), tests, and clear engineering trade-offs.
 
-I build practical software at the intersection of **AI systems, developer tools, and full-stack engineering**. I focus on readable code, explicit tests, useful projects, and learning in public.
+**Looking for:** Graduate / entry-level Software Engineer, Python Developer, Backend Developer, or AI Engineer roles.
 
-[Portfolio](https://portfolio1-tau-sandy.vercel.app) · [GitHub](https://github.com/Hariharans1971) · [Repositories](https://github.com/Hariharans1971?tab=repositories)
+**Core tools:** Python · SQL · FastAPI/Flask fundamentals · REST APIs · pandas · scikit-learn · MySQL · SQLite · Git/GitHub · Docker fundamentals
 
-</div>
+## Featured proof of work
 
----
+### 1. Agent Reliability Kit (ARK) — AI-agent policy checks for CI
+A local-first Python toolkit that records agent workflows as JSONL traces, compares runs, and enforces explicit policies for required/forbidden events, call counts, and recorded duration/token budgets. Includes a reusable GitHub Action, tests, a contribution roadmap, and a custom visual identity.
 
-## 🔭 Currently building
-- **Agent Reliability Kit** — policy-based CI guardrails, trace diffs, and regression checks for AI-agent workflows.
-- **Applied AI** — retrieval, document understanding, model evaluation, and responsible deployment.
-- **Full-stack systems** — Python APIs, SQL data models, and clean web interfaces.
+- [Repository](https://github.com/Hariharans1971/Agent-Reliability-Kit-ARK-)
+- [Architecture and limitations](https://github.com/Hariharans1971/Agent-Reliability-Kit-ARK-/blob/main/docs/ARCHITECTURE.md)
+- [Policy contracts](https://github.com/Hariharans1971/Agent-Reliability-Kit-ARK-/blob/main/docs/POLICY_CONTRACTS.md)
+- [CI checks](https://github.com/Hariharans1971/Agent-Reliability-Kit-ARK-/actions)
+- [Good first issue](https://github.com/Hariharans1971/Agent-Reliability-Kit-ARK-/issues/3)
 
-## 🧰 Toolbox
-![Python](https://img.shields.io/badge/Python-3776AB?style=flat-square&logo=python&logoColor=white)
-![FastAPI](https://img.shields.io/badge/FastAPI-009688?style=flat-square&logo=fastapi&logoColor=white)
-![SQL](https://img.shields.io/badge/SQL-4479A1?style=flat-square&logo=mysql&logoColor=white)
-![React](https://img.shields.io/badge/React-20232A?style=flat-square&logo=react&logoColor=61DAFB)
-![Docker](https://img.shields.io/badge/Docker-2496ED?style=flat-square&logo=docker&logoColor=white)
-![Git](https://img.shields.io/badge/Git-F05032?style=flat-square&logo=git&logoColor=white)
+**Scope and limitations:** an early-stage developer tool, not an agent runtime or formal safety guarantee. Policy checks depend on complete, correctly recorded traces.
 
-## 🌱 Engineering principles
-- Build the smallest useful version first.
-- Prefer readable code, reproducible tests, and clear documentation.
-- Be honest about limitations and welcome constructive collaboration.
 
-## ⭐ Featured work
-| Project | Focus |
-|---|---|
-| [Agent Reliability Kit](https://github.com/Hariharans1971/Agent-Reliability-Kit-ARK-) | Enforce policy contracts for agent traces in CI |
-| [Zentrix-AI](https://github.com/Hariharans1971/Zentrix-AI) | AI project work |
-| [Inventory Management System](https://github.com/Hariharans1971/inventory-management-system) | SQL schema and data workflows |
-| [Risk-Conscious Dynamic Inference on Edge](https://github.com/Hariharans1971/Risk-Conscious-Dynamic-Inference-on-Edge) | Risk-aware inference research |
+### 2. Document Analysis + RAG
+A FastAPI document-question-answering system with document ingestion, lexical retrieval, source-labelled passages, optional LLM generation, tests, and Docker setup.
 
-## 🤝 Let's build in the open
-Bug reports, practical ideas, and small open-source contributions are welcome.
+- [Code](https://github.com/Hariharans1971/document_analysis)
+- [Architecture and trade-offs](https://github.com/Hariharans1971/document_analysis/blob/main/docs/ARCHITECTURE.md)
+- [RAG guide](https://github.com/Hariharans1971/document_analysis/blob/main/RAG_GUIDE.md)
+- [CI runs](https://github.com/Hariharans1971/document_analysis/actions)
+
+**Measured synthetic regression set (CI, 24 labelled queries):** Recall@1 = 0.833 (20/24), Recall@3 = 1.000 (24/24), MRR = 0.910. A distinct-term-overlap baseline scored Recall@1 = 0.833, Recall@3 = 0.958 (23/24), and MRR = 0.889. All six authored negative smoke queries returned no passages. These authored fixture results are regression evidence, not independent real-world quality evidence.
+
+**Known limitations:** lexical retrieval rather than embeddings, in-memory index, no authentication, no OCR, and not production-hardened.
+
+### 3. Inventory Management System
+A MySQL 8 project with 13 relational tables, an ER diagram, and 5,795 synthetic rows across inventory and business transaction tables.
+
+- [Code and documentation](https://github.com/Hariharans1971/inventory-management-system)
+
+### 4. ClinicDesk — appointment workflow demo
+A learning project using FastAPI, SQLite, HTML/CSS/JavaScript, request validation, persistence, status filtering, and API tests.
+
+- [Code](https://github.com/Hariharans1971/Clinic)
+- [CI runs](https://github.com/Hariharans1971/Clinic/actions)
+
+Educational demo only; it is not intended for real patient data.
+
+### 5. Student Performance Prediction
+A reproducible classifier evaluation with a fixed stratified split and majority-class baseline. Latest recorded CI on the tracked CSV (480 rows, 16 predictors): Random Forest accuracy 0.8083 and macro-F1 0.8118 versus baseline accuracy 0.4417 and macro-F1 0.2042. Dataset-specific holdout evidence only—not external validation or a basis for individual student decisions.
+
+- [Code and evaluation](https://github.com/Hariharans1971/Student-Performance-ML-Project)
+
+## Open-source contribution in review
+
+[VueUse PR #5683](https://github.com/vueuse/vueuse/pull/5683) proposes support for element/component refs in `useTextDirection`, including computed CSS direction, reactive target changes, focused tests, and documentation. The pull request is open and not yet merged.
+
+## How I work
+
+- Prefer tests, reproducible setup, and meaningful documentation over unverified claims.
+- Record limitations and trade-offs honestly.
+- Keep credentials, private documents, and personal data out of source control.
+- Use AI tools as assistants, then verify, test, and be prepared to explain every design decision.
+
+## Experience
+
+- **Python Development Intern — Cognifyz Technologies:** automation and data-processing tasks.
+- **Machine Learning Intern — Cloudside Technologies:** ML work and Flask REST API exposure.
+
+## Research
+
+First-author IEEE ICECA 2025 paper: [“An Advanced Drug Mechanism of Action (MoA) Prediction Approach from Gene Expression using Transformers and XAI”](https://doi.org/10.1109/ICECA66444.2025.11383205). See the [matching Drug-MOA project](https://github.com/Hariharans1971/Drug-MOA-prediction).
+
+## Contact
+
+- GitHub: https://github.com/Hariharans1971
+- Portfolio: https://portfolio1-tau-sandy.vercel.app/
+- Alternate portfolio deployment: https://hariharans1971.github.io/portfolio/
+- Portfolio validation and live HTTP checks: https://github.com/Hariharans1971/portfolio/actions
+- LinkedIn: https://www.linkedin.com/in/hari-haran-b5aa50272/
+
+> Profile setup note: this draft is ready to copy into the root `README.md` of a public repository named exactly `Hariharans1971`. The GitHub connector did not expose a repository-creation action, so it has not been published as the special profile README yet.
