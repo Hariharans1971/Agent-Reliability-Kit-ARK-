@@ -11,13 +11,13 @@ I’m a 2026 B.Tech Computer Science and Engineering (AI & ML) graduate based in
 ## Featured proof of work
 
 ### 1. Agent Reliability Kit (ARK) — AI-agent policy checks for CI
-A local-first Python toolkit that records agent workflows as JSONL traces, compares runs, and enforces explicit policies for required/forbidden events, call counts, and recorded duration/token budgets. Includes a reusable GitHub Action, tests, a contribution roadmap, and a custom visual identity.
+A local-first Python toolkit that records agent workflows as JSONL traces and enforces policies for allowed/required/forbidden events, call counts, and total/per-event duration/token budgets. It also supports nested path diffs, dotted ignore paths, JUnit XML reports, strict trace validation, and a reusable GitHub Action.
 
 - [Repository](https://github.com/Hariharans1971/Agent-Reliability-Kit-ARK-)
 - [Architecture and limitations](https://github.com/Hariharans1971/Agent-Reliability-Kit-ARK-/blob/main/docs/ARCHITECTURE.md)
 - [Policy contracts](https://github.com/Hariharans1971/Agent-Reliability-Kit-ARK-/blob/main/docs/POLICY_CONTRACTS.md)
 - [CI checks](https://github.com/Hariharans1971/Agent-Reliability-Kit-ARK-/actions)
-- [Good first issue](https://github.com/Hariharans1971/Agent-Reliability-Kit-ARK-/issues/3)
+- [Good first issue: synthetic trace fixture pack](https://github.com/Hariharans1971/Agent-Reliability-Kit-ARK-/issues/7)
 
 **Scope and limitations:** an early-stage developer tool, not an agent runtime or formal safety guarantee. Policy checks depend on complete, correctly recorded traces.
 
