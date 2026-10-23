@@ -87,6 +87,11 @@ def main(argv: list[str] | None = None) -> int:
         default=[],
         help="ignore a dotted path in compared event fields; repeat for multiple paths",
     )
+    diff_parser.add_argument(
+        "--show-paths",
+        action="store_true",
+        help="show added, removed, and changed nested JSON paths for each changed event",
+    )
 
     eval_parser = sub.add_parser("evaluate", help="run basic deterministic checks")
     eval_parser.add_argument("trace")
@@ -118,14 +123,24 @@ def main(argv: list[str] | None = None) -> int:
                     load_trace(args.expected),
                     load_trace(args.actual),
                     ignore_paths=args.ignore_path,
+                    include_paths=args.show_paths,
                 )
                 if item["status"] != "same"
             ]
             print(f"Differences: {len(differences)}")
             for item in differences:
                 print(f"\n[{item['status'].upper()}] event index {item['index']}")
-                print("expected:", json.dumps(item["expected"], sort_keys=True))
-                print("actual:  ", json.dumps(item["actual"], sort_keys=True))
+                if args.show_paths:
+                    for change in item.get("changed_paths", []):
+                        expected_value = json.dumps(change["expected"], sort_keys=True)
+                        actual_value = json.dumps(change["actual"], sort_keys=True)
+                        print(
+                            f"  {change['status'].upper():7} {change['path']}: "
+                            f"{expected_value} -> {actual_value}"
+                        )
+                else:
+                    print("expected:", json.dumps(item["expected"], sort_keys=True))
+                    print("actual:  ", json.dumps(item["actual"], sort_keys=True))
             return 1 if differences else 0
 
         if args.command == "evaluate":
