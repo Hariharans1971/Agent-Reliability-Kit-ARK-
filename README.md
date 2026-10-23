@@ -13,7 +13,7 @@
 
 **AI agents are easy to demo. They are harder to trust.**
 
-A local-first Python toolkit for recording AI-agent workflows as readable JSONL traces and enforcing explicit CI contracts: required/forbidden actions, execution budgets, and behavioral diffs.
+A local-first Python toolkit for recording AI-agent workflows as readable JSONL traces and enforcing explicit CI contracts: allowed/required/forbidden actions, per-step execution budgets, and behavioral diffs.
 
 </div>
 
@@ -29,7 +29,7 @@ Agent workflows can fail in subtle ways: a tool receives the wrong arguments, a 
 | **Inspect** | Summarize a trace from the command line |
 | **Diff** | Compare runs while ignoring timestamps and generated IDs |
 | **Evaluate** | Run deterministic checks locally or in CI |
-| **Gate** | Enforce JSON policy contracts for required/forbidden events, call limits, latency, and token budgets |
+| **Gate** | Enforce JSON policy contracts for allowed/required/forbidden events, call limits, and total/per-step duration/token budgets |
 | **Privacy-first** | Store JSONL locally; optional best-effort key redaction |
 | **Framework-agnostic** | Instrument ordinary Python functions; keep integrations optional |
 
@@ -122,7 +122,7 @@ Replace `@main` with a reviewed release tag or commit SHA for production workflo
 | `ark evaluate TRACE --min-steps 3` | Require at least three events |
 | `ark evaluate TRACE --require order_lookup` | Require a named event |
 | `ark evaluate TRACE --json` | Emit machine-readable baseline checks |
-| `ark policy TRACE --policy POLICY.json` | Enforce required/forbidden events and recorded metric budgets |
+| `ark policy TRACE --policy POLICY.json` | Enforce event allowlists, required/forbidden events, and total/per-event metric budgets |
 | `ark policy TRACE --policy POLICY.json --json` | Emit machine-readable policy results |
 
 **Exit codes:** `0` checks passed, `1` regression/check failed, `2` invalid input or unreadable trace.
@@ -131,12 +131,12 @@ Replace `@main` with a reviewed release tag or commit SHA for production workflo
 
 - [x] JSONL trace recorder and reader
 - [x] Inspect, diff, evaluate, and policy CLI
-- [x] Declarative JSON policies for required/forbidden events, event/call limits, and recorded duration/token budgets
+- [x] Declarative JSON policies for allowlisted/required/forbidden events, event/call limits, and total/per-step duration/token budgets
 - [x] Reusable composite GitHub Action for policy enforcement
 - [x] Best-effort recursive key redaction
 - [x] Unit tests and GitHub Actions CI
 - [ ] Golden-trace fixtures and ignore-path rules
-- [ ] Latency and token-budget assertions
+- [x] Per-event duration and token budgets with missing-metric failure
 - [ ] JUnit-compatible CI output
 - [ ] Optional LangChain callback adapter
 - [ ] Optional OpenAI-compatible API adapter
