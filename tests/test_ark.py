@@ -202,17 +202,7 @@ class ARKTests(unittest.TestCase):
         self.assertIn("branding:", action)
         self.assertIn("  icon: shield", action)
         self.assertIn("  color: blue", action)
-        self.assertRegex(project_metadata, r'(?m)^version = "0\.1\.0"
-        with tempfile.TemporaryDirectory() as tmp:
-            target = Path(tmp) / "bad.jsonl"
-            target.write_text('not-json\n', encoding="utf-8")
-            with self.assertRaisesRegex(ValueError, ":1:"):
-                load_trace(target)
-
-
-if __name__ == "__main__":
-    unittest.main()
-)
+        self.assertRegex(project_metadata, r'(?m)^version = "0\.1\.0"$')
         self.assertTrue(release_notes.is_file())
         self.assertIn("GitHub Marketplace publication", release_checklist)
         self.assertIn("workflow_dispatch:", release_workflow)
