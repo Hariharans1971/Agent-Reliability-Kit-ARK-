@@ -35,3 +35,22 @@ ark diff expected.jsonl actual.jsonl \
 Paths use dot notation relative to the compared event fields. Numeric segments address list indexes. Dict fields are removed from a comparison copy; indexed list items are replaced by a stable sentinel to preserve list positions. Missing paths have no effect. Input trace objects are never mutated.
 
 Use ignore paths narrowly. Ignoring `kind`, `name`, or an entire `outputs` object can hide meaningful behavior changes. `metadata` is not compared by default, so `metadata.some_field` is unnecessary unless metadata becomes part of the comparison contract later.
+
+## Show nested differences
+
+Use `--show-paths` to display the exact fields that differ instead of printing the full expected and actual payloads:
+
+```bash
+ark diff expected.jsonl actual.jsonl --show-paths
+```
+
+Example output:
+
+```text
+[CHANGED] event index 0
+  CHANGED outputs.answer.text: "old answer" -> "new answer"
+  ADDED   outputs.answer.confidence: null -> 0.92
+  REMOVED outputs.answer.citation: "guide.md" -> null
+```
+
+Object paths use dot notation, and list positions use bracketed indexes such as `outputs.messages[0].text`. Added and removed fields are reported separately from changed values. You can combine `--show-paths` with one or more `--ignore-path` options. The default output is unchanged unless `--show-paths` is supplied.
