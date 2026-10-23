@@ -92,7 +92,7 @@ class ARKTests(unittest.TestCase):
             target = Path(tmp) / "invalid-events.jsonl"
             for changes, expected_message in invalid_updates:
                 event = {**valid, **changes}
-                target.write_text(__import__("json").dumps(event) + "\\n", encoding="utf-8")
+                target.write_text(__import__("json").dumps(event) + "\n", encoding="utf-8")
                 with self.subTest(changes=changes):
                     with self.assertRaisesRegex(ValueError, expected_message):
                         load_trace(target)
@@ -109,7 +109,7 @@ class ARKTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as tmp:
             target = Path(tmp) / "trace.jsonl"
             target.write_text(
-                __import__("json").dumps(valid) + "\\n" + __import__("json").dumps(invalid) + "\\n",
+                __import__("json").dumps(valid) + "\n" + __import__("json").dumps(invalid) + "\n",
                 encoding="utf-8",
             )
             with self.assertRaisesRegex(ValueError, ":2:"):
