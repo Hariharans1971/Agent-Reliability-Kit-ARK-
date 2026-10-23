@@ -61,6 +61,60 @@ class ARKTests(unittest.TestCase):
         result = diff_traces(expected, actual, ignore_paths=["outputs.messages.0.trace_id"])
         self.assertEqual(result[0]["status"], "same")
 
+    def test_diff_reports_nested_changed_added_removed_and_list_paths(self):
+        expected = [{
+            "kind": "llm",
+            "name": "answer",
+            "inputs": {},
+            "outputs": {
+                "answer": {"text": "old", "source": "docs"},
+                "messages": [{"id": "a"}, {"id": "b"}],
+            },
+        }]
+        actual = [{
+            "kind": "llm",
+            "name": "answer",
+            "inputs": {},
+            "outputs": {
+                "answer": {"text": "new", "confidence": 0.9},
+                "messages": [{"id": "a"}, {"id": "c"}, {"id": "d"}],
+            },
+        }]
+        result = diff_traces(expected, actual, include_paths=True)[0]
+        self.assertEqual(result["status"], "changed")
+        changes = {item["path"]: item["status"] for item in result["changed_paths"]}
+        self.assertEqual(changes["outputs.answer.text"], "changed")
+        self.assertEqual(changes["outputs.answer.source"], "removed")
+        self.assertEqual(changes["outputs.answer.confidence"], "added")
+        self.assertEqual(changes["outputs.messages[1].id"], "changed")
+        self.assertEqual(changes["outputs.messages[2]"], "added")
+
+    def test_diff_changed_paths_respect_ignore_paths(self):
+        expected = [{
+            "kind": "tool", "name": "lookup",
+            "inputs": {"request_id": "a"},
+            "outputs": {"answer": "old"},
+        }]
+        actual = [{
+            "kind": "tool", "name": "lookup",
+            "inputs": {"request_id": "b"},
+            "outputs": {"answer": "new"},
+        }]
+        result = diff_traces(
+            expected, actual,
+            ignore_paths=["inputs.request_id"],
+            include_paths=True,
+        )[0]
+        paths = [item["path"] for item in result["changed_paths"]]
+        self.assertEqual(paths, ["outputs.answer"])
+
+    def test_diff_does_not_add_changed_paths_by_default(self):
+        result = diff_traces(
+            [{"kind": "tool", "name": "x", "outputs": {"ok": True}}],
+            [{"kind": "tool", "name": "x", "outputs": {"ok": False}}],
+        )[0]
+        self.assertNotIn("changed_paths", result)
+
     def test_diff_rejects_empty_ignore_path(self):
         with self.assertRaisesRegex(ValueError, "non-empty dotted paths"):
             diff_traces([], [], ignore_paths=[""])
