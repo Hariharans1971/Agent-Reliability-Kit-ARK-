@@ -5,16 +5,16 @@
 # Hi, I'm Hariharan 👋
 ### AI Engineer in progress · Python · Full-Stack · Applied AI
 
-I build practical software at the intersection of **AI systems, developer tools, and full-stack engineering**. I focus on readable code, useful projects, and learning in public.
+I build practical software at the intersection of **AI systems, developer tools, and full-stack engineering**. I focus on readable code, explicit tests, useful projects, and learning in public.
 
-[GitHub](https://github.com/Hariharans1971) · [Repositories](https://github.com/Hariharans1971?tab=repositories)
+[Portfolio](https://portfolio1-tau-sandy.vercel.app) · [GitHub](https://github.com/Hariharans1971) · [Repositories](https://github.com/Hariharans1971?tab=repositories)
 
 </div>
 
 ---
 
 ## 🔭 Currently building
-- **Agent Reliability Kit** — local-first tracing and regression checks for AI-agent workflows.
+- **Agent Reliability Kit** — policy-based CI guardrails, trace diffs, and regression checks for AI-agent workflows.
 - **Applied AI** — retrieval, document understanding, model evaluation, and responsible deployment.
 - **Full-stack systems** — Python APIs, SQL data models, and clean web interfaces.
 
@@ -34,7 +34,7 @@ I build practical software at the intersection of **AI systems, developer tools,
 ## ⭐ Featured work
 | Project | Focus |
 |---|---|
-| [Agent Reliability Kit](https://github.com/Hariharans1971/Agent-Reliability-Kit-ARK-) | Test AI-agent workflows with local JSONL traces |
+| [Agent Reliability Kit](https://github.com/Hariharans1971/Agent-Reliability-Kit-ARK-) | Enforce policy contracts for agent traces in CI |
 | [Zentrix-AI](https://github.com/Hariharans1971/Zentrix-AI) | AI project work |
 | [Inventory Management System](https://github.com/Hariharans1971/inventory-management-system) | SQL schema and data workflows |
 | [Risk-Conscious Dynamic Inference on Edge](https://github.com/Hariharans1971/Risk-Conscious-Dynamic-Inference-on-Edge) | Risk-aware inference research |
