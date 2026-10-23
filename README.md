@@ -126,12 +126,15 @@ Replace `@main` with a reviewed release tag or commit SHA for production workflo
 | `ark inspect TRACE` | Summarize event count, types, duration, and token totals |
 | `ark diff EXPECTED ACTUAL` | Report changed, added, or removed event positions |
 | `ark diff EXPECTED ACTUAL --ignore-path inputs.request_id` | Ignore a selected dynamic field; repeat the flag for more paths |
+| `ark diff EXPECTED ACTUAL --show-paths` | Show nested added, removed, and changed fields for each changed event |
 | `ark evaluate TRACE` | Run baseline checks |
 | `ark evaluate TRACE --min-steps 3` | Require at least three events |
 | `ark evaluate TRACE --require order_lookup` | Require a named event |
-| `ark evaluate TRACE --json` | Emit machine-readable baseline checks |\n| `ark evaluate TRACE --junit-xml report.xml` | Write JUnit XML for CI test reporting |
+| `ark evaluate TRACE --json` | Emit machine-readable baseline checks |
+| `ark evaluate TRACE --junit-xml report.xml` | Write JUnit XML for CI test reporting |
 | `ark policy TRACE --policy POLICY.json` | Enforce event allowlists, required/forbidden events, and total/per-event metric budgets |
-| `ark policy TRACE --policy POLICY.json --json` | Emit machine-readable policy results |\n| `ark policy TRACE --policy POLICY.json --junit-xml report.xml` | Write policy checks as JUnit XML |
+| `ark policy TRACE --policy POLICY.json --json` | Emit machine-readable policy results |
+| `ark policy TRACE --policy POLICY.json --junit-xml report.xml` | Write policy checks as JUnit XML |
 
 **Exit codes:** `0` checks passed, `1` regression/check failed, `2` invalid input or unreadable trace.
 
