@@ -167,7 +167,7 @@ python -m unittest discover -s tests -v
 
 ### Open contribution opportunities
 
-- [Add path-focused nested JSON diff output (#6)](https://github.com/Hariharans1971/Agent-Reliability-Kit-ARK-/issues/6) — show exactly which nested fields changed.
+- [Add a synthetic trace fixture pack (#7)](https://github.com/Hariharans1971/Agent-Reliability-Kit-ARK-/issues/7) — give new contributors reproducible JSONL examples and CI learning cases.
 - [Validate ARK from a separate consumer repository (#5)](https://github.com/Hariharans1971/Agent-Reliability-Kit-ARK-/issues/5) — verify how the action behaves from a separate project.
 
 Please comment on an issue before starting larger changes so we can agree on a small, reviewable scope.
