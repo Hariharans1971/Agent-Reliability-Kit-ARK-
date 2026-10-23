@@ -33,6 +33,7 @@ Agent workflows can fail in subtle ways: a tool receives the wrong arguments, a 
 | **Evaluate** | Run deterministic checks locally or in CI |
 | **Gate** | Enforce JSON policy contracts for allowed/required/forbidden events, call limits, and total/per-step duration/token budgets |
 | **Privacy-first** | Store JSONL locally; optional best-effort key redaction |
+| **Offline viewer** | Search local JSONL events and inspect nested payloads in a browser without external libraries |
 | **Framework-agnostic** | Instrument ordinary Python functions; keep integrations optional |
 
 ## Quick start
@@ -63,6 +64,12 @@ To see the failure path, run this separately; it is expected to exit with code `
 ```bash
 ark policy examples/sample-trace.jsonl --policy policies/reject-sample.json
 ```
+
+## Offline browser viewer
+
+Open [`examples/trace-viewer.html`](examples/trace-viewer.html) in a browser, choose **Load sample trace**, or select a local JSONL file. The viewer shows summary metrics, lets you search/filter events, and displays the selected event's fields.
+
+It is a single HTML file with no third-party libraries or network calls. The file is read in your browser; the viewer does not upload traces. It is for inspection only, not a policy evaluator or a redaction/security scanner. Use `ark policy` for automated enforcement.
 
 ## 60-second example
 
@@ -153,7 +160,8 @@ This example pins a reviewed commit SHA rather than tracking a moving branch. Wh
 - [x] JUnit XML output for policy and evaluation checks
 - [ ] Optional LangChain callback adapter
 - [ ] Optional OpenAI-compatible API adapter
-- [ ] Exportable HTML trace viewer
+- [x] Offline single-file HTML viewer for local JSONL traces
+- [ ] CLI-exported self-contained report for sharing
 
 Roadmap items are proposals, not completed features. Please open an issue before starting a large contribution.
 
