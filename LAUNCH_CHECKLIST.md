@@ -42,6 +42,7 @@
 - [x] Review and document the known limitations in `docs/ARCHITECTURE.md`.
 - [x] Align `CHANGELOG.md` and staged v0.1.0 alpha release notes with package version 0.1.0.
 - [x] Add action branding metadata and an automated, validation-gated release workflow.
+- [x] Add regression coverage for Marketplace metadata and staged release artifacts.
 - [ ] Run Actions → Release manually to create the tag and public alpha release with built assets.
 - [ ] Review the resulting release page, uploaded assets, and SHA256SUMS.
 - [ ] Publish the action to GitHub Marketplace after accepting the developer agreement and selecting categories.
