@@ -13,7 +13,7 @@ The roadmap is community input, not a promise that every feature will ship.
 ## Phase 2 — stronger regression checks
 - [x] Dotted ignore paths for dynamic values during trace comparison\n- [ ] Golden-trace fixture packs and comparison presets
 - [x] Per-event duration/token budgets with explicit missing-metric failures
-- [ ] JUnit-compatible CI output
+- [x] JUnit XML output for policy and evaluation checks
 - [ ] Better nested JSON diff output
 - [ ] Exportable HTML trace viewer
 
