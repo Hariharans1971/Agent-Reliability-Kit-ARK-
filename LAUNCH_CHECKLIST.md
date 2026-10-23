@@ -45,7 +45,7 @@
 - [x] Add regression coverage for Marketplace metadata and staged release artifacts.
 - [x] Validate every GitHub Actions workflow's YAML syntax/structure in CI, including the release workflow.
 - [x] Pin the README composite-action example to a reviewed full commit SHA.
-- [ ] Run Actions → Release manually to create the tag and public alpha release with built assets.
-- [ ] Review the resulting release page, uploaded assets, and SHA256SUMS.
+- [ ] Run Actions → Release manually to create the `v0.1.0` draft alpha release with built assets.
+- [ ] Review the draft, uploaded assets, and SHA256SUMS; publish it in GitHub only after selecting the Marketplace option and category.
 - [ ] Publish the action to GitHub Marketplace after accepting the developer agreement and selecting categories.
 - [ ] Apply repository About/topics, upload the social-preview image in Settings, pin repositories, and create the special profile README repository.
