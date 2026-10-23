@@ -86,6 +86,34 @@ class PolicyCliTests(unittest.TestCase):
             self.assertIn("unexpected_action", failure.attrib["message"])
             self.assertIn("unexpected_action", failure.text or "")
 
+    def test_junit_report_escapes_xml_special_characters(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            trace = self._make_trace(tmp, "unexpected&action")
+            policy = self._make_policy(tmp, {"allowed_events": ["lookup"]})
+            report = Path(tmp) / "reports" / "policy.xml"
+            with contextlib.redirect_stdout(io.StringIO()):
+                code = main([
+                    "policy", str(trace), "--policy", str(policy),
+                    "--junit-xml", str(report),
+                ])
+            self.assertEqual(code, 1)
+            root = ET.parse(report).getroot()
+            failure = root.find("./testcase/failure")
+            self.assertIsNotNone(failure)
+            self.assertIn("unexpected&action", failure.attrib["message"])
+            self.assertIn("unexpected&action", failure.text or "")
+
+    def test_junit_report_path_error_returns_two(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            trace = self._make_trace(tmp, "lookup")
+            policy = self._make_policy(tmp, {"allowed_events": ["lookup"]})
+            with contextlib.redirect_stderr(io.StringIO()):
+                code = main([
+                    "policy", str(trace), "--policy", str(policy),
+                    "--junit-xml", tmp,
+                ])
+            self.assertEqual(code, 2)
+
     def test_evaluate_command_writes_junit_success_report(self):
         with tempfile.TemporaryDirectory() as tmp:
             trace = self._make_trace(tmp, "lookup")
