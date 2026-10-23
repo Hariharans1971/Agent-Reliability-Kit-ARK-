@@ -12,7 +12,7 @@ The roadmap is community input, not a promise that every feature will ship.
 
 ## Phase 2 — stronger regression checks
 - [ ] Golden trace fixtures with ignore-path rules for dynamic values
-- [ ] Latency and token budget assertions
+- [ ] Per-step and per-tool latency/token budget assertions
 - [ ] JUnit-compatible CI output
 - [ ] Better nested JSON diff output
 - [ ] Exportable HTML trace viewer
