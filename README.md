@@ -28,7 +28,8 @@ Agent workflows can fail in subtle ways: a tool receives the wrong arguments, a 
 | **Record** | Capture tool inputs/outputs, decisions, durations, and token counters |
 | **Inspect** | Summarize a trace from the command line |
 | **Diff** | Compare runs while ignoring timestamps and generated IDs |
-| **Evaluate** | Run deterministic checks locally or in CI |\n| **Gate** | Enforce JSON policy contracts for required/forbidden events, call limits, latency, and token budgets |
+| **Evaluate** | Run deterministic checks locally or in CI |
+| **Gate** | Enforce JSON policy contracts for required/forbidden events, call limits, latency, and token budgets |
 | **Privacy-first** | Store JSONL locally; optional best-effort key redaction |
 | **Framework-agnostic** | Instrument ordinary Python functions; keep integrations optional |
 
@@ -127,7 +128,9 @@ Replace `@main` with a reviewed release tag or commit SHA for production workflo
 ## Roadmap
 
 - [x] JSONL trace recorder and reader
-- [x] Inspect, diff, and evaluate CLI
+- [x] Inspect, diff, evaluate, and policy CLI
+- [x] Declarative JSON policies for required/forbidden events, event/call limits, and recorded duration/token budgets
+- [x] Reusable composite GitHub Action for policy enforcement
 - [x] Best-effort recursive key redaction
 - [x] Unit tests and GitHub Actions CI
 - [ ] Golden-trace fixtures and ignore-path rules
@@ -165,6 +168,9 @@ Trace files may contain prompts, tool arguments, identifiers, or sensitive custo
 ## Documentation
 
 - [Trace format](docs/TRACE_FORMAT.md)
+- [Policy contracts](docs/POLICY_CONTRACTS.md)
+- [Architecture and limitations](docs/ARCHITECTURE.md)
+- [Why ARK? Project positioning and related tools](docs/WHY_ARK.md)
 - [Roadmap](docs/ROADMAP.md)
 - [Release checklist](docs/RELEASING.md)
 - [Contribution guide](CONTRIBUTING.md)
