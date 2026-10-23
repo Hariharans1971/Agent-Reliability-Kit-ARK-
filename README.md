@@ -67,6 +67,8 @@ ark policy examples/sample-trace.jsonl --policy policies/reject-sample.json
 
 ## Offline browser viewer
 
+**Try it online:** [Vercel demo](https://portfolio1-tau-sandy.vercel.app/ark-trace-viewer.html) · [GitHub Pages demo](https://hariharans1971.github.io/portfolio/ark-trace-viewer.html).
+
 Open [`examples/trace-viewer.html`](examples/trace-viewer.html) in a browser, choose **Load sample trace**, or select a local JSONL file. The viewer shows summary metrics, lets you search/filter events, and displays the selected event's fields.
 
 It is a single HTML file with no third-party libraries or network calls. The file is read in your browser; the viewer does not upload traces. It is for inspection only, not a policy evaluator or a redaction/security scanner. Use `ark policy` for automated enforcement.
