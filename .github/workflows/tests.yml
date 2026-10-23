@@ -29,7 +29,9 @@ jobs:
           ark evaluate examples/sample-trace.jsonl --min-steps 2
           ark diff examples/sample-trace.jsonl examples/sample-trace.jsonl
           python examples/customer_support_agent.py
-          ark policy artifacts/customer-support.jsonl --policy policies/customer-support.json\n          ark policy artifacts/customer-support.jsonl --policy policies/customer-support.json --junit-xml artifacts/ark-policy-results.xml\n          ark evaluate examples/sample-trace.jsonl --min-steps 2 --junit-xml artifacts/ark-evaluation-results.xml
+          ark policy artifacts/customer-support.jsonl --policy policies/customer-support.json
+          ark policy artifacts/customer-support.jsonl --policy policies/customer-support.json --junit-xml artifacts/ark-policy-results.xml
+          ark evaluate examples/sample-trace.jsonl --min-steps 2 --junit-xml artifacts/ark-evaluation-results.xml
       - name: Confirm CLI rejects an unapproved trace
         id: reject-policy
         continue-on-error: true
