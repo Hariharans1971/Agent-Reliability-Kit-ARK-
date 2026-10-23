@@ -19,12 +19,13 @@ Any Python agent or tool
 ## Core components
 
 - `ark.recorder.TraceRecorder`: records one run and writes line-delimited JSON.
-- `ark.io.load_trace`: loads events and reports malformed records with line numbers.
-- `ark.diff.diff_traces`: compares behavioral fields while ignoring run-specific IDs and timestamps.
+- `ark.io.load_trace`: validates event field types and reports malformed records with file and line numbers.
+- `ark.diff.diff_traces`: compares behavioral fields, supports dotted ignore paths, and can optionally report nested changed paths for added/removed/changed values.
 - `ark.evaluate.evaluate_trace`: runs simple baseline checks.
-- `ark.policy.evaluate_policy`: enforces required/forbidden events, call limits, and recorded duration/token budgets.
+- `ark.policy.evaluate_policy`: enforces allowlisted/required/forbidden events, event/call limits, total budgets, and per-event duration/token budgets.
 - `ark.redact.redact`: best-effort recursive removal of values under common sensitive keys.
 - `ark.cli`: command-line interface.
+- `ark.cli`: includes JUnit XML output for evaluation and policy checks.
 - `action.yml`: reusable composite GitHub Action that fails a workflow when a JSON policy contract fails.
 
 ## Design choices
@@ -44,7 +45,7 @@ The initial policy engine validates concrete invariants. Model-based judges can 
 ## Current limitations
 
 - ARK does not execute an LLM or transmit traces.
-- Diffing operates by event position; it does not align reordered events.
+- Diffing operates by event position; it does not align reordered events. Opt-in changed-path output narrows field-level differences but is not an edit-distance or semantic alignment algorithm.
 - Policy checks only see the events and metrics that instrumentation records.
 - Redaction is based on key names and cannot detect every sensitive string.
 - Production use needs a team-defined trace retention and access policy.
