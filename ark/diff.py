@@ -51,16 +51,51 @@ def _comparison_view(event: dict, ignore_paths: list[list[str]]) -> dict[str, An
     return view
 
 
+def _changed_paths(expected: Any, actual: Any, path: str = "") -> list[dict[str, Any]]:
+    """Return deterministic leaf-level changes between two JSON-compatible values."""
+    changes: list[dict[str, Any]] = []
+    if isinstance(expected, dict) and isinstance(actual, dict):
+        keys = sorted(set(expected) | set(actual), key=str)
+        for key in keys:
+            child_path = f"{path}.{key}" if path else str(key)
+            if key not in actual:
+                changes.append({"path": child_path, "status": "removed", "expected": expected[key], "actual": None})
+            elif key not in expected:
+                changes.append({"path": child_path, "status": "added", "expected": None, "actual": actual[key]})
+            else:
+                changes.extend(_changed_paths(expected[key], actual[key], child_path))
+        return changes
+
+    if isinstance(expected, list) and isinstance(actual, list):
+        for index in range(max(len(expected), len(actual))):
+            child_path = f"{path}[{index}]" if path else f"[{index}]"
+            if index >= len(actual):
+                changes.append({"path": child_path, "status": "removed", "expected": expected[index], "actual": None})
+            elif index >= len(expected):
+                changes.append({"path": child_path, "status": "added", "expected": None, "actual": actual[index]})
+            else:
+                changes.extend(_changed_paths(expected[index], actual[index], child_path))
+        return changes
+
+    if expected != actual:
+        changes.append({"path": path or "$", "status": "changed", "expected": expected, "actual": actual})
+    return changes
+
+
 def diff_traces(
     expected: list[dict],
     actual: list[dict],
     ignore_paths: list[str] | None = None,
+    include_paths: bool = False,
 ) -> list[dict]:
-    """Compare trace behavior, optionally ignoring dotted paths in compared fields.
+    """Compare trace behavior and optionally include nested, path-focused changes.
 
-    Paths are relative to the compared event fields (kind/name/inputs/outputs/token_usage).
-    Dict fields are removed; indexed list items are replaced with a stable sentinel to
-    avoid shifting positions. Missing paths have no effect. Inputs are never mutated.
+    Ignore paths are relative to the compared event fields (kind/name/inputs/outputs/token_usage).
+    Dict fields are removed; indexed list items are replaced with a stable sentinel to preserve
+    positions. Missing paths have no effect. Input events are never mutated.
+
+    Set include_paths=True to add changed_paths entries describing added, removed, or changed
+    nested values on non-identical events. The default response shape is unchanged.
     """
     parsed_ignore_paths = _parse_ignore_paths(ignore_paths)
     result: list[dict] = []
@@ -77,5 +112,17 @@ def diff_traces(
             status = "same"
         else:
             status = "changed"
-        result.append({"index": index, "status": status, "expected": left_view, "actual": right_view})
+
+        item = {"index": index, "status": status, "expected": left_view, "actual": right_view}
+        if include_paths and status != "same":
+            if status == "changed":
+                item["changed_paths"] = _changed_paths(left_view, right_view)
+            else:
+                item["changed_paths"] = [{
+                    "path": "$",
+                    "status": status,
+                    "expected": left_view,
+                    "actual": right_view,
+                }]
+        result.append(item)
     return result
