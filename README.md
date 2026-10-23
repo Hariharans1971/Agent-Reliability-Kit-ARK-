@@ -93,6 +93,24 @@ flowchart LR
 
 ARK does not execute an LLM or transmit trace data by itself. A passing check means only that the configured checks passed; it is not a guarantee of agent correctness.
 
+## Use ARK as a GitHub Action
+
+ARK includes a composite action so a repository can fail CI when a recorded agent run violates a policy:
+
+```yaml
+- name: Generate or collect your agent trace
+  run: python your_agent_test.py
+
+- name: Enforce agent execution contract
+  uses: Hariharans1971/Agent-Reliability-Kit-ARK-@main
+  with:
+    trace: artifacts/agent-trace.jsonl
+    policy: policies/agent-policy.json
+    python-version: "3.12"
+```
+
+Replace `@main` with a reviewed release tag or commit SHA for production workflows. The trace and policy paths are resolved from the consuming repository's workspace.
+
 ## CLI reference
 
 | Command | Purpose |
