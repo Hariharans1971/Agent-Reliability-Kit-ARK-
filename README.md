@@ -153,7 +153,7 @@ This example pins a reviewed commit SHA rather than tracking a moving branch. Wh
 
 ## Releases
 
-No versioned GitHub Release has been published yet. The first `v0.1.0` alpha release is staged with curated notes and a validation-gated release workflow.
+No versioned GitHub Release has been published yet. The first `v0.1.0` alpha release is staged with curated notes and a validation-gated workflow that runs tests on Python 3.10–3.12, builds the package, verifies a clean installation, creates checksums, and publishes a pre-release.
 
 - [Staged v0.1.0 alpha release notes](docs/releases/v0.1.0.md)
 - [Release workflow](.github/workflows/release.yml)
