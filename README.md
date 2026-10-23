@@ -1,34 +1,52 @@
+<div align="center">
+
+<img src="assets/ark-mark.svg" alt="Agent Reliability Kit mark" width="140" />
+
 # Agent Reliability Kit (ARK)
 
-**Record, inspect, compare, and regression-test AI-agent workflows — locally, with Python.**
+### Record. Inspect. Compare. Trust your agent changes.
 
-Agent Reliability Kit is a small, framework-agnostic toolkit for recording AI-agent steps as readable JSONL traces and detecting behavioral changes between runs. It starts without a hosted service, API key, or mandatory third-party package.
+[![Tests](https://github.com/Hariharans1971/Agent-Reliability-Kit-ARK-/actions/workflows/tests.yml/badge.svg)](https://github.com/Hariharans1971/Agent-Reliability-Kit-ARK-/actions/workflows/tests.yml)
+[![Python 3.10+](https://img.shields.io/badge/Python-3.10%2B-3776AB?logo=python&logoColor=white)](https://python.org)
+[![MIT License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
+[![Contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg)](CONTRIBUTING.md)
 
-> AI agents are easy to demo. They are harder to trust.
+**AI agents are easy to demo. They are harder to trust.**
+
+A local-first, framework-agnostic Python toolkit for recording AI-agent workflows as readable JSONL traces and catching behavioral regressions between runs.
+
+</div>
+
+---
 
 ## Why ARK?
 
-Agent workflows can fail in subtle ways: a tool receives the wrong arguments, a tool result changes after a prompt update, or token usage grows unexpectedly. ARK gives developers a portable trace and deterministic checks without claiming that any test can guarantee an agent is correct.
+Agent workflows can fail in subtle ways: a tool receives the wrong arguments, a result changes after a prompt update, or token usage grows unexpectedly. ARK gives developers a portable record and repeatable checks without requiring a hosted service or LLM API key.
 
 | Capability | What it does |
 |---|---|
-| Record | Capture tool inputs/outputs, decisions, durations, and token counters |
-| Inspect | Summarize a trace from the command line |
-| Diff | Compare two runs while ignoring timestamps and generated IDs |
-| Evaluate | Run deterministic checks locally or in CI |
-| Privacy-first | Keep JSONL traces local by default; optional best-effort key redaction |
-| Framework-agnostic | Instrument ordinary Python functions; add integrations separately |
+| **Record** | Capture tool inputs/outputs, decisions, durations, and token counters |
+| **Inspect** | Summarize a trace from the command line |
+| **Diff** | Compare runs while ignoring timestamps and generated IDs |
+| **Evaluate** | Run deterministic checks locally or in CI |
+| **Privacy-first** | Store JSONL locally; optional best-effort key redaction |
+| **Framework-agnostic** | Instrument ordinary Python functions; keep integrations optional |
 
 ## Quick start
 
-Requires Python 3.10+.
+**Requirements:** Python 3.10+.
 
 ```bash
 git clone https://github.com/Hariharans1971/Agent-Reliability-Kit-ARK-.git
 cd Agent-Reliability-Kit-ARK-
 python -m venv .venv
-# Windows: .venv\Scripts\activate
-# macOS/Linux: source .venv/bin/activate
+
+# Windows
+.venv\Scripts\activate
+
+# macOS / Linux
+source .venv/bin/activate
+
 python -m pip install -e .
 python examples/customer_support_agent.py
 ark inspect artifacts/customer-support.jsonl
@@ -58,63 +76,83 @@ trace.record(
 trace.save("run.jsonl")
 ```
 
-A trace is plain JSONL — one event per line. Inspect it, diff it in Git, or use it in your own evaluation pipeline.
+Each record becomes one line of JSONL. You can attach a trace to a bug report, diff runs in Git, or connect it to your own evaluation pipeline.
 
-## Architecture
+## How it works
 
 ```mermaid
 flowchart LR
-  A[Your agent] --> B[TraceRecorder]
-  B --> C[JSONL trace]
-  C --> D[Inspect]
-  C --> E[Compare runs]
-  C --> F[Evaluate checks]
-  E --> G[Regression report]
-  F --> G
+    A[Your agent] --> B[TraceRecorder]
+    B --> C[JSONL trace]
+    C --> D[Inspect]
+    C --> E[Compare runs]
+    C --> F[Evaluate checks]
+    E --> G[Regression report]
+    F --> G
 ```
 
-ARK does not execute an LLM or transmit trace data by itself. A passing check means only that the configured checks passed.
+ARK does not execute an LLM or transmit trace data by itself. A passing check means only that the configured checks passed; it is not a guarantee of agent correctness.
 
-## CLI
+## CLI reference
 
 | Command | Purpose |
 |---|---|
-| `ark inspect TRACE` | Summarize event count, kinds, duration, and token totals |
+| `ark inspect TRACE` | Summarize event count, types, duration, and token totals |
 | `ark diff EXPECTED ACTUAL` | Report changed, added, or removed event positions |
-| `ark evaluate TRACE` | Run deterministic baseline checks |
+| `ark evaluate TRACE` | Run baseline checks |
 | `ark evaluate TRACE --min-steps 3` | Require at least three events |
 | `ark evaluate TRACE --require order_lookup` | Require a named event |
+| `ark evaluate TRACE --json` | Emit machine-readable check results |
 
-Exit codes: `0` pass, `1` regression/check failure, `2` invalid input or unreadable trace.
+**Exit codes:** `0` checks passed, `1` regression/check failed, `2` invalid input or unreadable trace.
 
 ## Roadmap
 
-- [x] JSONL trace schema and recorder
+- [x] JSONL trace recorder and reader
 - [x] Inspect, diff, and evaluate CLI
-- [x] Best-effort recursive key redaction helper
+- [x] Best-effort recursive key redaction
 - [x] Unit tests and GitHub Actions CI
 - [ ] Golden-trace fixtures and ignore-path rules
-- [ ] Latency/token budgets and JUnit output
+- [ ] Latency and token-budget assertions
+- [ ] JUnit-compatible CI output
 - [ ] Optional LangChain callback adapter
 - [ ] Optional OpenAI-compatible API adapter
 - [ ] Exportable HTML trace viewer
 
-Roadmap items are proposals, not completed features. Open an issue before starting a large contribution.
+Roadmap items are proposals, not completed features. Please open an issue before starting a large contribution.
 
 ## Contributing
 
-Bug reports, documentation improvements, synthetic examples, tests, and small integrations are welcome. Start with [CONTRIBUTING.md](CONTRIBUTING.md), then open an issue or pull request. Keep the core dependency-free where possible and include tests for behavior changes.
+Bug reports, documentation improvements, synthetic examples, tests, and small integrations are welcome. Start with [CONTRIBUTING.md](CONTRIBUTING.md), check [the roadmap](docs/ROADMAP.md), or open an issue.
+
+For a code change:
+
+```bash
+python -m unittest discover -s tests -v
+```
 
 ## Security and privacy
 
-Trace files may contain prompts, tool arguments, identifiers, or customer data. Never commit real production traces or secrets. Redaction is best-effort and does not guarantee anonymity. See [SECURITY.md](SECURITY.md).
+Trace files may contain prompts, tool arguments, identifiers, or sensitive customer context. Never commit secrets or real production traces. The redaction helper is best-effort and does not guarantee anonymity. See [SECURITY.md](SECURITY.md).
+
+## Documentation
+
+- [Trace format](docs/TRACE_FORMAT.md)
+- [Roadmap](docs/ROADMAP.md)
+- [Release checklist](docs/RELEASING.md)
+- [Contribution guide](CONTRIBUTING.md)
+- [Security policy](SECURITY.md)
 
 ## Project status
 
-ARK is an initial MVP. Contributions and feedback are welcome; please report bugs and limitations honestly.
+ARK is an early MVP built to invite practical feedback. Please report rough edges and limitations honestly. The best next feature is the one that solves a real user problem.
 
 ---
 
-Built in the open by [Hariharans1971](https://github.com/Hariharans1971).
+<div align="center">
 
-Topics to add in repository settings: `ai-agents`, `agent-evaluation`, `observability`, `python`, `developer-tools`, `testing`, `llm`.
+**Found a bug? Open an issue. Want a feature? Start a discussion.**
+
+Created by [Hariharan S.](https://github.com/Hariharans1971) · Released under the [MIT License](LICENSE)
+
+</div>
