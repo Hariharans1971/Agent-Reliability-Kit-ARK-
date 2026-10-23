@@ -15,10 +15,10 @@ A Python engineer who already records agent/tool events and wants a local, versi
 ## ARK's current approach
 
 - Store caller-supplied events in a portable JSONL trace.
-- Compare recorded behavior across runs.
+- Compare recorded behavior across runs, optionally showing exact nested paths that changed and ignoring selected volatile fields.
 - Express permitted, required, and forbidden event names as JSON.
 - Limit total event counts, repeated calls, total recorded duration/tokens, and per-event duration/token use.
-- Fail a GitHub Actions job when the trace violates its policy contract.
+- Fail a GitHub Actions job when the trace violates its policy contract, and emit JUnit XML for CI reporting.
 
 ARK does not yet run agents, automatically instrument arbitrary frameworks, intercept live provider traffic, replay provider calls, inspect hidden prompt/context state, or guarantee that a trace captures every action. Its checks are only as good as its instrumentation and policy.
 
@@ -41,6 +41,9 @@ These projects are established references in neighboring categories. Their exist
 |---|---|
 | Read caller-supplied JSONL events | Yes |
 | Compare traces by event position | Yes |
+| Show nested added/removed/changed field paths | Yes, opt-in |
+| Ignore selected dotted paths during diffs | Yes |
+| Emit JUnit XML for policy/evaluation checks | Yes |
 | Allowlist and require/forbid named events | Yes |
 | Limit total events and repeated event calls | Yes |
 | Gate on total recorded duration/token counters | Yes |
