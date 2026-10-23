@@ -15,9 +15,9 @@
 
 A local-first Python toolkit for recording AI-agent workflows as readable JSONL traces and enforcing explicit CI contracts: allowed/required/forbidden actions, per-step execution budgets, and behavioral diffs.
 
-If ARK is useful in your workflow, star the repository and share a reproducible issue using synthetic traces. Real feedback drives the roadmap.
+**[Try the offline trace viewer ↗](https://portfolio1-tau-sandy.vercel.app/ark-trace-viewer.html)** · [Quick start](#quick-start) · [CI integration](docs/CI_INTEGRATION.md) · [Contribute](CONTRIBUTING.md)
 
-**[Try the offline trace viewer ↗](https://portfolio1-tau-sandy.vercel.app/ark-trace-viewer.html)** · [Quick start](#quick-start) · [Contribute](CONTRIBUTING.md)
+**See a real failure:** the synthetic [duplicate-refund example](docs/CI_INTEGRATION.md#try-the-duplicate-refund-example) shows how a policy can reject a second refund submission.
 
 </div>
 
@@ -57,7 +57,7 @@ python -m pip install -e .
 python examples/customer_support_agent.py
 ark inspect artifacts/customer-support.jsonl
 ark evaluate artifacts/customer-support.jsonl --min-steps 3
-ark diff examples/sample-trace.jsonl examples/sample-trace.jsonl
+ark diff examples/expected-refund-trace.jsonl examples/actual-refund-trace.jsonl --show-paths
 ark policy artifacts/customer-support.jsonl --policy policies/customer-support.json
 ```
 
@@ -74,6 +74,18 @@ ark policy examples/sample-trace.jsonl --policy policies/reject-sample.json
 Open [`examples/trace-viewer.html`](examples/trace-viewer.html) in a browser, choose **Load sample trace**, or select a local JSONL file. The viewer shows summary metrics, lets you search/filter events, and displays the selected event's fields.
 
 It is a single HTML file with no third-party libraries or network calls. The file is read in your browser; the viewer does not upload traces. It is for inspection only, not a policy evaluator or a redaction/security scanner. Use `ark policy` for automated enforcement.
+
+## Real regression example: duplicate refund submission
+
+A baseline trace contains one `refund_submit` event. The changed trace contains two. ARK can compare both runs and enforce a policy limiting refund submissions to one call:
+
+```bash
+ark diff examples/expected-refund-trace.jsonl examples/actual-refund-trace.jsonl --show-paths
+ark policy examples/expected-refund-trace.jsonl --policy policies/refund-safety.json
+ark policy examples/actual-refund-trace.jsonl --policy policies/refund-safety.json
+```
+
+The first policy check should pass; the second should fail with exit code `1`. Both traces are synthetic and make no real payment calls. See the full [CI integration guide](docs/CI_INTEGRATION.md).
 
 ## 60-second example
 
@@ -133,6 +145,8 @@ ARK includes a composite action so a repository can fail CI when a recorded agen
 This example pins a reviewed commit SHA rather than tracking a moving branch. When upgrading, review the change and update the SHA (or use a signed/reviewed release tag). The trace and policy paths are resolved from the consuming repository's workspace. The same pinned revision is exercised by the [consumer-style CI workflow](.github/workflows/consumer-smoke.yml).
 
 ## CLI reference
+
+See the full [CLI reference](docs/CLI.md) for usage details.
 
 | Command | Purpose |
 |---|---|
@@ -221,6 +235,8 @@ ARK is an early MVP built to invite practical feedback. Please report rough edge
 <div align="center">
 
 **Found a bug? Open an issue. Have a feature idea? Use the feature-request template.**
+
+If ARK helps your team catch a real regression, consider [starring the repository](https://github.com/Hariharans1971/Agent-Reliability-Kit-ARK-/stargazers) and sharing a reproducible synthetic example.
 
 Created by [Hariharan S.](https://github.com/Hariharans1971) · Released under the [MIT License](LICENSE)
 
