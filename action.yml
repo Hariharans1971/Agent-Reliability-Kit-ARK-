@@ -1,6 +1,9 @@
 name: "Agent Reliability Kit Policy Gate"
 description: "Fail CI when an AI-agent trace violates a declarative JSON contract."
 author: "Hariharan S."
+branding:
+  icon: shield
+  color: blue
 
 inputs:
   trace:
