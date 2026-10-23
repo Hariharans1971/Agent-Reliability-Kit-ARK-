@@ -183,6 +183,7 @@ jobs:
             --title "$title" \
             --notes-file "docs/releases/${tag}.md" \
             --target "$GITHUB_SHA" \
+            --draft \
             --prerelease
-          echo "Published ${tag} from $GITHUB_SHA."
-          echo "Review release assets, checksums, and Marketplace settings before announcing."
+          echo "Created draft pre-release ${tag} from $GITHUB_SHA."
+          echo "Review the draft assets, notes, and checksums in GitHub before publishing to users or the Marketplace."
