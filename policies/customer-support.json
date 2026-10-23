@@ -1,6 +1,12 @@
 {
   "min_events": 3,
   "max_events": 10,
+  "allowed_events": [
+    "order_lookup",
+    "refund_eligibility",
+    "refund_quote",
+    "customer_reply"
+  ],
   "required_events": [
     "order_lookup",
     "refund_eligibility",
@@ -13,5 +19,15 @@
   "max_total_tokens": 2000,
   "max_calls_per_event": {
     "order_lookup": 1
+  },
+  "max_duration_ms_per_event": {
+    "order_lookup": 30,
+    "refund_eligibility": 10,
+    "refund_quote": 20,
+    "customer_reply": 20
+  },
+  "max_tokens_per_event": {
+    "refund_eligibility": 300,
+    "customer_reply": 400
   }
 }
