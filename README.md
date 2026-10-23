@@ -158,7 +158,7 @@ python -m unittest discover -s tests -v
 
 - [Improve malformed trace validation (#3)](https://github.com/Hariharans1971/Agent-Reliability-Kit-ARK-/issues/3) — focused standard-library task.
 - [Ignore selected JSON paths in diffs (#1)](https://github.com/Hariharans1971/Agent-Reliability-Kit-ARK-/issues/1) — make regression comparisons less noisy.
-- [Add per-step latency and token budgets (#2)](https://github.com/Hariharans1971/Agent-Reliability-Kit-ARK-/issues/2) — identify expensive individual steps.
+- [Validate ARK from a separate consumer repository (#5)](https://github.com/Hariharans1971/Agent-Reliability-Kit-ARK-/issues/5) — prove the action works outside its own repository.
 - [Export JUnit XML (#4)](https://github.com/Hariharans1971/Agent-Reliability-Kit-ARK-/issues/4) — improve CI reporting.
 
 Please comment on an issue before starting larger changes so we can agree on a small, reviewable scope.
