@@ -51,6 +51,28 @@ jobs:
     steps:
       - name: Check out the example consumer files
         uses: actions/checkout@v7
+      - name: Set up Python for fixture verification
+        uses: actions/setup-python@v7
+        with:
+          python-version: "3.12"
+      - name: Install ARK to validate the negative fixture
+        run: python -m pip install -e .
+      - name: Verify the rejection fixture fails for the expected policy reason
+        shell: bash
+        run: |
+          set +e
+          output="$(ark policy examples/sample-trace.jsonl --policy policies/reject-sample.json 2>&1)"
+          status=$?
+          set -e
+          printf '%s\n' "$output"
+          if [ "$status" -ne 1 ]; then
+            echo "::error::Expected exit code 1 for a policy violation, got $status"
+            exit 1
+          fi
+          if ! printf '%s' "$output" | grep -Fq "unexpected event names"; then
+            echo "::error::The fixture failed for a reason other than its event allowlist"
+            exit 1
+          fi
       - name: Invoke the published action on a deliberately restricted policy
         id: restricted
         continue-on-error: true
