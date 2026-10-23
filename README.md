@@ -188,6 +188,7 @@ Trace files may contain prompts, tool arguments, identifiers, or sensitive custo
 - [Release checklist](docs/RELEASING.md)
 - [Contribution guide](CONTRIBUTING.md)
 - [Security policy](SECURITY.md)
+- [Citation metadata](CITATION.cff)
 
 ## Project status
 
@@ -197,7 +198,7 @@ ARK is an early MVP built to invite practical feedback. Please report rough edge
 
 <div align="center">
 
-**Found a bug? Open an issue. Want a feature? Start a discussion.**
+**Found a bug? Open an issue. Have a feature idea? Use the feature-request template.**
 
 Created by [Hariharan S.](https://github.com/Hariharans1971) · Released under the [MIT License](LICENSE)
 
