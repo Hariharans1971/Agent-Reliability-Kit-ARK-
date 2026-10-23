@@ -32,6 +32,22 @@ jobs:
           ark policy artifacts/customer-support.jsonl --policy policies/customer-support.json
           ark policy artifacts/customer-support.jsonl --policy policies/customer-support.json --junit-xml artifacts/ark-policy-results.xml
           ark evaluate examples/sample-trace.jsonl --min-steps 2 --junit-xml artifacts/ark-evaluation-results.xml
+      - name: Verify the rejection fixture fails for the expected policy reason
+        shell: bash
+        run: |
+          set +e
+          output="$(ark policy examples/sample-trace.jsonl --policy policies/reject-sample.json 2>&1)"
+          status=$?
+          set -e
+          printf '%s\n' "$output"
+          if [ "$status" -ne 1 ]; then
+            echo "::error::Expected exit code 1 for a policy violation, got $status"
+            exit 1
+          fi
+          if ! printf '%s' "$output" | grep -Fq "unexpected event names"; then
+            echo "::error::The fixture failed for a reason other than its event allowlist"
+            exit 1
+          fi
       - name: Confirm CLI rejects an unapproved trace
         id: reject-policy
         continue-on-error: true
