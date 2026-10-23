@@ -103,7 +103,12 @@ def evaluate_policy(events: list[dict[str, Any]], policy: dict[str, Any]) -> lis
             for counter_name, value in usage.items():
                 if not isinstance(value, int) or isinstance(value, bool) or value < 0:
                     raise ValueError(f"event {index} has invalid token counter {counter_name!r}")
-                total_tokens += value
+            # Many providers include total_tokens alongside input/output breakdowns.
+            # Prefer the aggregate to avoid counting those components twice.
+            if "total_tokens" in usage:
+                total_tokens += usage["total_tokens"]
+            else:
+                total_tokens += sum(usage.values())
         limit = policy["max_total_tokens"]
         add("max_total_tokens", total_tokens <= limit, f"recorded token count {total_tokens}; limit {limit}")
 
