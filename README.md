@@ -19,6 +19,10 @@ A local-first Python toolkit for recording AI-agent workflows as readable JSONL 
 
 **See a real failure:** the synthetic [duplicate-refund example](docs/CI_INTEGRATION.md#try-the-duplicate-refund-example) shows how a policy can reject a second refund submission.
 
+<p align="center">
+  <img src="assets/ark-workflow.svg" alt="ARK workflow: record agent events, inspect and diff traces, evaluate a policy, and gate CI" width="100%" />
+</p>
+
 </div>
 
 ---
