@@ -1,0 +1,202 @@
+name: Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "Version without the leading v; must match pyproject.toml and staged release notes."
+        required: true
+        type: string
+        default: "0.1.0"
+      release_type:
+        description: "Choose alpha for the first public pre-release, or stable after review."
+        required: true
+        type: choice
+        options:
+          - alpha
+          - stable
+        default: alpha
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ark-release-${{ inputs.version }}
+  cancel-in-progress: false
+
+jobs:
+  verify:
+    name: Verify Python ${{ matrix.python-version }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.10", "3.11", "3.12"]
+    steps:
+      - name: Check out source
+        uses: actions/checkout@v7
+      - name: Require the default branch and matching release metadata
+        env:
+          RELEASE_VERSION: ${{ inputs.version }}
+        run: |
+          set -Eeuo pipefail
+          test "$GITHUB_REF_NAME" = "main" || {
+            echo "::error::Run releases from main only."
+            exit 1
+          }
+          python - <<'PY'
+          import os
+          import re
+          import tomllib
+          from pathlib import Path
+
+          version = os.environ["RELEASE_VERSION"]
+          if not re.fullmatch(r"(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)", version):
+              raise SystemExit(f"Invalid release version: {version!r}; expected x.y.z.")
+          project = tomllib.loads(Path("pyproject.toml").read_text(encoding="utf-8"))
+          package_version = project["project"]["version"]
+          if package_version != version:
+              raise SystemExit(
+                  f"Requested release {version} does not match pyproject.toml ({package_version})."
+              )
+          notes = Path("docs/releases") / f"v{version}.md"
+          if not notes.is_file():
+              raise SystemExit(f"Release notes are missing: {notes}")
+          print(f"Release metadata validated for v{version}.")
+          PY
+      - name: Set up Python
+        uses: actions/setup-python@v7
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Install package and Ruff
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -e . ruff
+      - name: Run static analysis
+        run: ruff check --select E4,E7,E9,F,I,RUF022,SIM117 ark tests
+      - name: Run unit tests
+        run: python -m unittest discover -s tests -v
+      - name: Exercise CLI and synthetic workflow
+        run: |
+          ark inspect examples/sample-trace.jsonl
+          ark evaluate examples/sample-trace.jsonl --min-steps 2
+          ark diff examples/sample-trace.jsonl examples/sample-trace.jsonl --show-paths
+          python examples/customer_support_agent.py
+          ark policy artifacts/customer-support.jsonl --policy policies/customer-support.json
+          ark policy artifacts/customer-support.jsonl --policy policies/customer-support.json --junit-xml artifacts/release-policy-results.xml
+          ark evaluate examples/sample-trace.jsonl --min-steps 2 --junit-xml artifacts/release-evaluation-results.xml
+      - name: Confirm rejected policy fails for the expected reason
+        shell: bash
+        run: |
+          set +e
+          output="$(ark policy examples/sample-trace.jsonl --policy policies/reject-sample.json 2>&1)"
+          status=$?
+          set -e
+          printf '%s\n' "$output"
+          if [ "$status" -ne 1 ]; then
+            echo "::error::Expected exit code 1 for a policy violation, got $status"
+            exit 1
+          fi
+          if ! printf '%s' "$output" | grep -Fq "unexpected event names"; then
+            echo "::error::The rejection fixture failed for an unexpected reason."
+            exit 1
+          fi
+      - name: Smoke-test the composite action
+        uses: ./
+        with:
+          trace: artifacts/customer-support.jsonl
+          policy: policies/customer-support.json
+          python-version: ${{ matrix.python-version }}
+
+  build:
+    name: Build and verify distributable artifacts
+    needs: verify
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out source
+        uses: actions/checkout@v7
+      - name: Set up Python
+        uses: actions/setup-python@v7
+        with:
+          python-version: "3.12"
+      - name: Build source and wheel distributions
+        run: |
+          python -m pip install --upgrade pip build
+          python -m build --sdist --wheel --outdir dist
+          ls -lah dist
+      - name: Install wheel in a clean environment
+        run: |
+          python -m venv .release-test
+          . .release-test/bin/activate
+          python -m pip install dist/*.whl
+          ark --help
+          python -c "import ark; print('Installed ARK:', ark.__file__)"
+      - name: Create SHA-256 checksums
+        run: |
+          cd dist
+          sha256sum *.whl *.tar.gz > SHA256SUMS
+          cat SHA256SUMS
+      - name: Upload release assets
+        uses: actions/upload-artifact@v4
+        with:
+          name: release-assets
+          path: dist/*
+          if-no-files-found: error
+          retention-days: 7
+
+  publish:
+    name: Publish GitHub release
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Check out the exact verified source commit
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+      - name: Download verified release assets
+        uses: actions/download-artifact@v4
+        with:
+          name: release-assets
+          path: release-assets
+      - name: Create release from the verified commit
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          RELEASE_VERSION: ${{ inputs.version }}
+          RELEASE_TYPE: ${{ inputs.release_type }}
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          test "$GITHUB_REF_NAME" = "main" || {
+            echo "::error::Run releases from main only."
+            exit 1
+          }
+          tag="v${RELEASE_VERSION}"
+          test -f "docs/releases/${tag}.md" || {
+            echo "::error::Curated release notes are missing."
+            exit 1
+          }
+          git fetch --tags origin
+          if git rev-parse --verify --quiet "refs/tags/${tag}" >/dev/null; then
+            echo "::error::Tag ${tag} already exists. Do not overwrite an existing release."
+            exit 1
+          fi
+          mapfile -t assets < <(find release-assets -maxdepth 1 -type f -print | sort)
+          if [ "${#assets[@]}" -lt 3 ]; then
+            echo "::error::Expected wheel, source distribution, and checksums."
+            exit 1
+          fi
+          title="Agent Reliability Kit ${tag}"
+          flags=()
+          if [ "$RELEASE_TYPE" = "alpha" ]; then
+            title="${title} — Alpha"
+            flags+=(--prerelease)
+          fi
+          gh release create "$tag" "${assets[@]}" \
+            --title "$title" \
+            --notes-file "docs/releases/${tag}.md" \
+            --target "$GITHUB_SHA" \
+            "${flags[@]}"
+          echo "Published ${tag} from $GITHUB_SHA."
+          echo "Review release assets, checksums, and Marketplace settings before announcing."
