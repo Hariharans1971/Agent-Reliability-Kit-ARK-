@@ -151,6 +151,15 @@ This example pins a reviewed commit SHA rather than tracking a moving branch. Wh
 
 **Exit codes:** `0` checks passed, `1` regression/check failed, `2` invalid input or unreadable trace.
 
+## Releases
+
+No versioned GitHub Release has been published yet. The first `v0.1.0` alpha release is staged with curated notes and a validation-gated release workflow.
+
+- [Staged v0.1.0 alpha release notes](docs/releases/v0.1.0.md)
+- [Release workflow](.github/workflows/release.yml)
+- [Release checklist](docs/RELEASING.md)
+- [Run the release workflow in GitHub Actions](https://github.com/Hariharans1971/Agent-Reliability-Kit-ARK-/actions/workflows/release.yml)
+
 ## Roadmap
 
 - [x] JSONL trace recorder and reader
