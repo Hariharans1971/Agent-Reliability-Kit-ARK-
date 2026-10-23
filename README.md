@@ -131,6 +131,15 @@ For a code change:
 python -m unittest discover -s tests -v
 ```
 
+### Good first contributions
+
+- [Improve malformed trace validation (#3)](https://github.com/Hariharans1971/Agent-Reliability-Kit-ARK-/issues/3) — focused standard-library task.
+- [Ignore selected JSON paths in diffs (#1)](https://github.com/Hariharans1971/Agent-Reliability-Kit-ARK-/issues/1) — make regression comparisons less noisy.
+- [Add latency and token budgets (#2)](https://github.com/Hariharans1971/Agent-Reliability-Kit-ARK-/issues/2) — add deterministic CI checks.
+- [Export JUnit XML (#4)](https://github.com/Hariharans1971/Agent-Reliability-Kit-ARK-/issues/4) — improve CI reporting.
+
+Please comment on an issue before starting larger changes so we can agree on a small, reviewable scope.
+
 ## Security and privacy
 
 Trace files may contain prompts, tool arguments, identifiers, or sensitive customer context. Never commit secrets or real production traces. The redaction helper is best-effort and does not guarantee anonymity. See [SECURITY.md](SECURITY.md).
