@@ -1,0 +1,93 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 640" role="img" aria-labelledby="title desc">
+  <title id="title">Agent Reliability Kit — Policy-as-code guardrails for AI agents</title>
+  <desc id="desc">GitHub social preview with a dark navy and teal background, an agent workflow trace diagram, and the words Trace, Diff, Gate.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#07111f"/>
+      <stop offset="55%" stop-color="#101e37"/>
+      <stop offset="100%" stop-color="#0b383b"/>
+    </linearGradient>
+    <linearGradient id="trace" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#60a5fa"/>
+      <stop offset="50%" stop-color="#67e8f9"/>
+      <stop offset="100%" stop-color="#5eead4"/>
+    </linearGradient>
+    <radialGradient id="halo" cx="82%" cy="43%" r="53%">
+      <stop offset="0%" stop-color="#14b8a6" stop-opacity=".24"/>
+      <stop offset="100%" stop-color="#14b8a6" stop-opacity="0"/>
+    </radialGradient>
+    <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M40 0H0V40" fill="none" stroke="#cbd5e1" stroke-opacity=".055" stroke-width="1"/>
+    </pattern>
+  </defs>
+  <rect width="1280" height="640" fill="url(#bg)"/>
+  <rect width="1280" height="640" fill="url(#grid)"/>
+  <rect width="1280" height="640" fill="url(#halo)"/>
+  <g fill="none" stroke="#67e8f9" stroke-opacity=".16" stroke-width="1.5">
+    <path d="M766 78H842V117H930V72H1002"/>
+    <path d="M750 535H828V495H916V532H1002"/>
+    <path d="M1047 58V104H1112V145H1224"/>
+    <path d="M1029 574V535H1126V493H1215"/>
+    <path d="M790 272H856V309H912"/>
+    <path d="M1065 308H1122V337H1220"/>
+    <path d="M1165 220V255H1205"/>
+  </g>
+  <g fill="#67e8f9" fill-opacity=".6">
+    <circle cx="842" cy="117" r="4"/><circle cx="930" cy="72" r="4"/>
+    <circle cx="828" cy="495" r="4"/><circle cx="1002" cy="532" r="4"/>
+    <circle cx="1112" cy="145" r="4"/><circle cx="1126" cy="493" r="4"/>
+    <circle cx="856" cy="272" r="4"/><circle cx="1122" cy="308" r="4"/>
+  </g>
+  <g font-family="Inter,Segoe UI,Arial,sans-serif">
+    <rect x="84" y="78" width="262" height="35" rx="17.5" fill="#0f766e" fill-opacity=".26" stroke="#5eead4" stroke-opacity=".62"/>
+    <text x="215" y="101" text-anchor="middle" fill="#99f6e4" font-size="13" font-weight="700" letter-spacing="2">OPEN-SOURCE AI DEVELOPER TOOL</text>
+
+    <text x="82" y="208" fill="#f8fafc" font-size="58" font-weight="800" letter-spacing="-1.2">Agent Reliability Kit</text>
+    <text x="86" y="260" fill="#cbd5e1" font-size="25" font-weight="500">Policy-as-code guardrails for AI-agent workflows</text>
+    <text x="86" y="304" fill="#94a3b8" font-size="17">Record traces. Compare behavior. Fail CI when a contract is broken.</text>
+
+    <g>
+      <rect x="86" y="355" width="138" height="44" rx="22" fill="#1e3a5f" stroke="#60a5fa" stroke-opacity=".82"/>
+      <circle cx="108" cy="377" r="5" fill="#60a5fa"/>
+      <text x="158" y="383" fill="#dbeafe" font-size="14" font-weight="700" text-anchor="middle">TRACE</text>
+
+      <rect x="238" y="355" width="138" height="44" rx="22" fill="#164e63" stroke="#67e8f9" stroke-opacity=".82"/>
+      <circle cx="260" cy="377" r="5" fill="#67e8f9"/>
+      <text x="308" y="383" fill="#cffafe" font-size="14" font-weight="700" text-anchor="middle">DIFF</text>
+
+      <rect x="390" y="355" width="138" height="44" rx="22" fill="#134e4a" stroke="#5eead4" stroke-opacity=".82"/>
+      <circle cx="412" cy="377" r="5" fill="#5eead4"/>
+      <text x="460" y="383" fill="#ccfbf1" font-size="14" font-weight="700" text-anchor="middle">GATE</text>
+    </g>
+
+    <line x1="86" y1="454" x2="530" y2="454" stroke="#94a3b8" stroke-opacity=".22"/>
+    <text x="86" y="492" fill="#cbd5e1" font-size="16" font-weight="600">Python</text>
+    <circle cx="155" cy="486" r="3" fill="#5eead4"/>
+    <text x="174" y="492" fill="#cbd5e1" font-size="16" font-weight="600">JSONL</text>
+    <circle cx="254" cy="486" r="3" fill="#5eead4"/>
+    <text x="273" y="492" fill="#cbd5e1" font-size="16" font-weight="600">GitHub Actions</text>
+    <text x="86" y="558" fill="#64748b" font-size="14">LOCAL-FIRST  ·  FRAMEWORK-AGNOSTIC  ·  CI-READY</text>
+  </g>
+
+  <g>
+    <rect x="706" y="164" width="502" height="310" rx="24" fill="#07111f" fill-opacity=".62" stroke="#67e8f9" stroke-opacity=".23"/>
+    <text x="750" y="208" fill="#94a3b8" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="12" font-weight="700" letter-spacing="2">AGENT WORKFLOW</text>
+    <path d="M760 320H850L898 262L954 320L1012 230L1070 290H1154" fill="none" stroke="url(#trace)" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+    <g stroke-width="4">
+      <circle cx="760" cy="320" r="10" fill="#60a5fa" stroke="#dbeafe"/>
+      <circle cx="898" cy="262" r="10" fill="#67e8f9" stroke="#cffafe"/>
+      <circle cx="954" cy="320" r="10" fill="#67e8f9" stroke="#cffafe"/>
+      <circle cx="1012" cy="230" r="10" fill="#5eead4" stroke="#ccfbf1"/>
+      <circle cx="1070" cy="290" r="10" fill="#5eead4" stroke="#ccfbf1"/>
+      <circle cx="1154" cy="290" r="10" fill="#34d399" stroke="#d1fae5"/>
+    </g>
+    <g font-family="Inter,Segoe UI,Arial,sans-serif">
+      <rect x="750" y="383" width="116" height="40" rx="9" fill="#1e3a5f" stroke="#60a5fa" stroke-opacity=".5"/>
+      <text x="808" y="408" text-anchor="middle" fill="#dbeafe" font-size="12" font-weight="700">JSONL TRACE</text>
+      <rect x="880" y="383" width="116" height="40" rx="9" fill="#164e63" stroke="#67e8f9" stroke-opacity=".5"/>
+      <text x="938" y="408" text-anchor="middle" fill="#cffafe" font-size="12" font-weight="700">POLICY</text>
+      <rect x="1010" y="383" width="154" height="40" rx="9" fill="#134e4a" stroke="#5eead4" stroke-opacity=".5"/>
+      <text x="1087" y="408" text-anchor="middle" fill="#ccfbf1" font-size="12" font-weight="700">CI PASS / FAIL</text>
+    </g>
+  </g>
+</svg>
