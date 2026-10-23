@@ -1,0 +1,67 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 360" role="img" aria-labelledby="title desc">
+  <title id="title">Agent Reliability Kit</title>
+  <desc id="desc">A deep navy technical banner with a cyan event trace flowing through verification checkpoints, representing policy-based CI guardrails for AI agents.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#07111f"/>
+      <stop offset="54%" stop-color="#101e37"/>
+      <stop offset="100%" stop-color="#123a45"/>
+    </linearGradient>
+    <linearGradient id="trace" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#60a5fa"/>
+      <stop offset="55%" stop-color="#67e8f9"/>
+      <stop offset="100%" stop-color="#5eead4"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="82%" cy="46%" r="52%">
+      <stop offset="0%" stop-color="#2dd4bf" stop-opacity=".20"/>
+      <stop offset="100%" stop-color="#2dd4bf" stop-opacity="0"/>
+    </radialGradient>
+    <pattern id="grid" width="44" height="44" patternUnits="userSpaceOnUse">
+      <path d="M44 0H0V44" fill="none" stroke="#94a3b8" stroke-opacity=".07" stroke-width="1"/>
+    </pattern>
+  </defs>
+  <rect width="1280" height="360" rx="22" fill="url(#bg)"/>
+  <rect width="1280" height="360" rx="22" fill="url(#grid)"/>
+  <rect width="1280" height="360" rx="22" fill="url(#glow)"/>
+  <g fill="none" stroke="#7dd3fc" stroke-opacity=".18" stroke-width="1.5">
+    <path d="M690 55H790V96H858V68H928"/>
+    <path d="M706 292H790V256H875V298H972"/>
+    <path d="M1040 44V82H1110V126H1204"/>
+    <path d="M1030 316V284H1130V248H1228"/>
+    <path d="M760 176H828V206H892"/>
+    <path d="M1080 174H1134V194H1225"/>
+  </g>
+  <g fill="#67e8f9" fill-opacity=".42">
+    <circle cx="790" cy="96" r="3.5"/><circle cx="928" cy="68" r="3.5"/>
+    <circle cx="790" cy="256" r="3.5"/><circle cx="972" cy="298" r="3.5"/>
+    <circle cx="1110" cy="126" r="3.5"/><circle cx="1130" cy="248" r="3.5"/>
+    <circle cx="828" cy="176" r="3.5"/><circle cx="1134" cy="174" r="3.5"/>
+  </g>
+  <g font-family="Inter,Segoe UI,Arial,sans-serif">
+    <rect x="72" y="58" width="236" height="32" rx="16" fill="#0f766e" fill-opacity=".28" stroke="#5eead4" stroke-opacity=".55"/>
+    <text x="190" y="79" fill="#99f6e4" font-size="13" font-weight="700" letter-spacing="2" text-anchor="middle">OPEN-SOURCE DEVELOPER TOOL</text>
+    <text x="72" y="150" fill="#f8fafc" font-size="48" font-weight="800" letter-spacing="-.9">Agent Reliability Kit</text>
+    <text x="74" y="194" fill="#cbd5e1" font-size="22" font-weight="500">Policy-as-code guardrails for AI-agent workflows</text>
+    <g>
+      <rect x="74" y="230" width="126" height="36" rx="18" fill="#1e3a5f" stroke="#60a5fa" stroke-opacity=".8"/>
+      <text x="137" y="253" fill="#dbeafe" font-size="14" font-weight="700" text-anchor="middle">TRACE</text>
+      <rect x="212" y="230" width="126" height="36" rx="18" fill="#164e63" stroke="#67e8f9" stroke-opacity=".8"/>
+      <text x="275" y="253" fill="#cffafe" font-size="14" font-weight="700" text-anchor="middle">DIFF</text>
+      <rect x="350" y="230" width="126" height="36" rx="18" fill="#134e4a" stroke="#5eead4" stroke-opacity=".8"/>
+      <text x="413" y="253" fill="#ccfbf1" font-size="14" font-weight="700" text-anchor="middle">GATE</text>
+    </g>
+    <text x="74" y="318" fill="#94a3b8" font-size="14">Local-first · Python · Framework-agnostic · CI-ready</text>
+  </g>
+  <g fill="none" stroke="url(#trace)" stroke-width="7" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M752 208H842L886 150L946 206L1008 110L1076 166L1150 111H1207"/>
+  </g>
+  <g stroke-width="4">
+    <circle cx="752" cy="208" r="10" fill="#60a5fa" stroke="#dbeafe"/>
+    <circle cx="886" cy="150" r="10" fill="#67e8f9" stroke="#cffafe"/>
+    <circle cx="946" cy="206" r="10" fill="#67e8f9" stroke="#cffafe"/>
+    <circle cx="1008" cy="110" r="10" fill="#5eead4" stroke="#ccfbf1"/>
+    <circle cx="1076" cy="166" r="10" fill="#5eead4" stroke="#ccfbf1"/>
+    <circle cx="1207" cy="111" r="10" fill="#34d399" stroke="#d1fae5"/>
+  </g>
+  <text x="980" y="250" fill="#dbeafe" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="12" font-weight="700" letter-spacing="2" text-anchor="middle">DETERMINISTIC CI CONTRACTS</text>
+</svg>
