@@ -10,6 +10,8 @@ From the repository root, install ARK and generate a synthetic support trace:
 python -m pip install -e .
 python examples/customer_support_agent.py
 ark policy artifacts/customer-support.jsonl --policy policies/customer-support.json
+# This fixture intentionally fails because its events are not allowlisted
+ark policy examples/sample-trace.jsonl --policy policies/reject-sample.json
 ```
 
 For machine-readable results:
@@ -52,6 +54,10 @@ ark policy artifacts/customer-support.jsonl --policy policies/customer-support.j
 Each occurrence of a selected event is checked independently. If a selected event is present but its required measurement is missing, that check fails rather than treating the missing value as zero. A per-event cap does not require the event to occur; use `required_events` for that.
 
 If `allowed_events` is present, an unlisted event name fails the contract. This is an audit of recorded event names, **not** a runtime permission system. It only detects actions that were captured in the trace.
+
+## Verify a rejection
+
+The repository includes [a deliberately restrictive sample policy](../policies/reject-sample.json). Applying it to `examples/sample-trace.jsonl` should return exit code `1` because the trace contains event names that are not on the allowlist. This is useful when checking the policy CLI's failure path.
 
 ## Metric semantics and limitations
 
