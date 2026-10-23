@@ -15,6 +15,7 @@
 - [x] JUnit XML output for evaluation and policy checks
 - [x] Consumer-style pinned-action smoke test: passing and expected-rejection paths
 - [x] Package metadata, classifiers, and project links improved
+- [x] Weekly Dependabot updates configured for Python packaging and GitHub Actions
 - [x] Profile/project README and portfolio project links refreshed
 - [x] Portfolio live-site verification passing
 
