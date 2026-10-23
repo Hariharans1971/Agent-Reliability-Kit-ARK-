@@ -1,0 +1,185 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="dark">
+<title>ARK Trace Viewer — Offline JSONL Explorer</title>
+<style>
+:root{--bg:#07111f;--panel:#0d1b2c;--panel2:#11243a;--line:#20364d;--text:#e8f0f8;--muted:#9db0c5;--teal:#5eead4;--blue:#7dd3fc;--danger:#fda4af;--radius:16px}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at 80% -10%,#123a4555,transparent 42%),var(--bg);color:var(--text);font:15px/1.5 ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif}button,input,select{font:inherit}button{cursor:pointer}
+.wrap{max-width:1360px;margin:auto;padding:30px 22px 60px}header{display:flex;align-items:center;justify-content:space-between;gap:18px;margin-bottom:28px}.brand{display:flex;align-items:center;gap:13px}.mark{width:46px;height:46px;border-radius:14px;background:linear-gradient(135deg,#17365b,#0e645f);border:1px solid #5eead455;display:grid;place-items:center;font-weight:900;letter-spacing:1px;color:#bffbf0}.eyebrow{color:var(--teal);font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:2px}h1{font-size:clamp(24px,4vw,36px);line-height:1.12;letter-spacing:-1px;margin:3px 0}.subtitle{color:var(--muted);margin:6px 0 0;max-width:760px}.local-tag{white-space:nowrap;border:1px solid #5eead455;border-radius:999px;padding:7px 12px;color:#a7f3d0;background:#064e3b22;font-size:12px;font-weight:700}
+.intro{display:flex;justify-content:space-between;align-items:flex-end;gap:20px;margin-bottom:24px}.actions{display:flex;gap:9px;flex-wrap:wrap}.btn{border:1px solid var(--line);border-radius:10px;padding:10px 14px;background:var(--panel2);color:var(--text);font-weight:700;transition:transform .15s,border-color .15s}.btn:hover{transform:translateY(-1px);border-color:#5eead4aa}.btn.primary{color:#06251f;background:var(--teal);border-color:var(--teal)}.btn.ghost{background:transparent}
+.drop{border:1px dashed #4c718b;background:#0a1726;border-radius:var(--radius);padding:22px 24px;display:flex;align-items:center;gap:17px;margin-bottom:18px;transition:border-color .15s,background .15s}.drop.active{border-color:var(--teal);background:#0b2a2d}.drop-icon{width:42px;height:42px;flex:0 0 auto;border-radius:12px;display:grid;place-items:center;background:#12344a;color:var(--blue);font-size:22px}.drop strong{display:block;font-size:15px}.drop p{margin:3px 0 0;font-size:13px;color:var(--muted)}.drop .btn{margin-left:auto;flex-shrink:0}#fileInput{display:none}.notice{display:none;margin-bottom:18px;padding:12px 14px;border-radius:11px;border:1px solid #92424a;background:#4b1725;color:#fecdd3;white-space:pre-wrap;font-size:13px}.notice.visible{display:block}
+.stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin:18px 0}.stat{padding:17px 18px;border:1px solid var(--line);border-radius:14px;background:linear-gradient(135deg,#0d1b2c,#0a1725)}.stat .label{color:var(--muted);font-size:12px;font-weight:700;letter-spacing:.5px;text-transform:uppercase}.stat .value{margin-top:5px;font-size:27px;font-weight:800;letter-spacing:-.7px;font-variant-numeric:tabular-nums}.stat .hint{font-size:12px;color:#7794ad;margin-top:1px}
+.toolbar{display:flex;gap:10px;align-items:center;margin:20px 0 13px;flex-wrap:wrap}.search{min-width:220px;flex:1}.search input,.toolbar select{width:100%;border:1px solid var(--line);border-radius:10px;background:#0b1929;color:var(--text);padding:11px 13px;outline:none}.search input:focus,.toolbar select:focus{border-color:var(--teal)}.toolbar select{width:auto;min-width:170px}.result-count{margin-left:auto;color:var(--muted);font-size:12px}
+.workspace{display:grid;grid-template-columns:minmax(0,1.12fr) minmax(320px,.88fr);gap:14px;align-items:start}.card{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;min-width:0}.card-head{padding:15px 17px;display:flex;align-items:center;justify-content:space-between;gap:15px;border-bottom:1px solid var(--line);background:#0b1928}.card-head h2{font-size:14px;margin:0;letter-spacing:.2px}.card-head span{font-size:12px;color:var(--muted)}.table-wrap{overflow:auto;max-height:610px}table{border-collapse:collapse;width:100%;font-size:13px}th{text-align:left;color:#9bb2c9;font-weight:700;font-size:11px;text-transform:uppercase;letter-spacing:.6px;padding:12px 13px;background:#0b1928;position:sticky;top:0;z-index:1}td{padding:12px 13px;border-top:1px solid #1b2e42;vertical-align:top}tbody tr{cursor:pointer;transition:background .1s}tbody tr:hover{background:#12263b}tbody tr.selected{background:#12373a;box-shadow:inset 3px 0 var(--teal)}.cell-index{color:#7894ae;font-variant-numeric:tabular-nums}.event-name{font-weight:750;color:#e9f4ff;overflow-wrap:anywhere}.event-kind{display:inline-block;border:1px solid #315574;border-radius:6px;padding:2px 6px;color:#b6d9f4;font-size:11px;white-space:nowrap}.num{white-space:nowrap;font-variant-numeric:tabular-nums;color:#d4e5f4}
+.details-content{padding:18px}.detail-title{margin:0 0 5px;font-size:21px;letter-spacing:-.3px;overflow-wrap:anywhere}.detail-meta{display:flex;flex-wrap:wrap;gap:7px;margin:11px 0 18px}.pill{border:1px solid #2d485f;border-radius:999px;padding:4px 8px;color:#c4d7e8;font-size:11px}.section-label{margin:18px 0 8px;color:var(--teal);font-weight:800;font-size:11px;text-transform:uppercase;letter-spacing:1.2px}pre{white-space:pre-wrap;word-break:break-word;overflow-wrap:anywhere;background:#07121f;border:1px solid #1c3348;border-radius:10px;padding:13px;margin:0;color:#cfdeed;font:12px/1.6 ui-monospace,SFMono-Regular,Consolas,monospace;max-height:300px;overflow:auto}.empty{padding:35px 22px;text-align:center;color:var(--muted)}.empty strong{display:block;color:#dbe8f4;font-size:15px;margin-bottom:5px}.privacy{margin-top:18px;color:#7895af;font-size:12px;display:flex;gap:9px;align-items:flex-start}.privacy b{color:#a8f3d0}footer{margin-top:32px;padding-top:15px;border-top:1px solid #1b2e42;display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px;color:#7895af;font-size:12px}
+@media(max-width:900px){.workspace{grid-template-columns:1fr}.table-wrap{max-height:420px}.intro{align-items:flex-start;flex-direction:column}.stats{grid-template-columns:repeat(2,minmax(0,1fr))}.local-tag{display:none}}@media(max-width:520px){.wrap{padding:20px 12px 42px}header{align-items:flex-start}.drop{align-items:flex-start;flex-wrap:wrap;padding:17px}.drop .btn{margin-left:59px}.stats{gap:8px}.stat{padding:13px}.stat .value{font-size:22px}.toolbar select{flex:1}.result-count{width:100%;margin-left:0}.actions{width:100%}.actions .btn{flex:1}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header><div class="brand"><div class="mark" aria-hidden="true">ARK</div><div><div class="eyebrow">Agent Reliability Kit</div><h1>Trace Viewer</h1></div></div><div class="local-tag">● Offline · No upload</div></header>
+  <section class="intro"><div><p class="subtitle">Explore a JSONL agent run without a database, account, package install, or model API key. Search events, filter by kind, and inspect the exact captured inputs and outputs.</p></div><div class="actions"><button class="btn primary" id="sampleBtn" type="button">Load sample trace</button><button class="btn ghost" id="clearBtn" type="button">Clear</button></div></section>
+  <section class="drop" id="dropZone" aria-label="Load a trace file"><div class="drop-icon" aria-hidden="true">↥</div><div><strong>Drop a JSONL trace here</strong><p>Choose a local .jsonl or .ndjson file. One JSON event per line.</p></div><button class="btn" id="browseBtn" type="button">Choose file</button><input id="fileInput" type="file" accept=".jsonl,.ndjson,.txt,application/json"></section>
+  <div id="notice" class="notice" role="status" aria-live="polite"></div>
+  <section class="stats" aria-label="Trace summary"><div class="stat"><div class="label">Events</div><div class="value" id="statEvents">—</div><div class="hint">Valid JSON records</div></div><div class="stat"><div class="label">Event kinds</div><div class="value" id="statKinds">—</div><div class="hint" id="kindHint">Kinds represented</div></div><div class="stat"><div class="label">Duration</div><div class="value" id="statDuration">—</div><div class="hint">Sum of recorded durations</div></div><div class="stat"><div class="label">Tokens</div><div class="value" id="statTokens">—</div><div class="hint">Recorded usage only</div></div></section>
+  <section class="toolbar" aria-label="Event filters"><label class="search"><input id="searchInput" type="search" placeholder="Search event names, fields, or values…" autocomplete="off" disabled></label><select id="kindFilter" aria-label="Filter by event kind" disabled><option value="">All event kinds</option></select><div id="resultCount" class="result-count">Load a trace to begin</div></section>
+  <section class="workspace"><div class="card"><div class="card-head"><h2>Event timeline</h2><span id="sourceLabel">No trace loaded</span></div><div class="table-wrap"><table><thead><tr><th>#</th><th>Event</th><th>Duration</th><th>Tokens</th></tr></thead><tbody id="eventRows"><tr><td colspan="4"><div class="empty"><strong>Your trace, at a glance.</strong>Load the sample or select a JSONL file to explore events.</div></td></tr></tbody></table></div></div><aside class="card" aria-label="Selected event details"><div class="card-head"><h2>Selected event</h2><span id="selectedLabel">None</span></div><div id="detailPane" class="details-content"><div class="empty"><strong>Select an event</strong>Its captured fields will appear here as read-only JSON.</div></div></aside></section>
+  <div class="privacy"><span aria-hidden="true">🔒</span><div><b>Local processing by design.</b> This page reads the file in your browser and does not send it to a server. Avoid sharing sensitive traces; this viewer is a convenience tool, not a redaction or security scanner.</div></div>
+  <footer><span>ARK · Single-file demo · No third-party libraries</span><span>Use the policy and diff CLI commands for automated checks.</span></footer>
+</div>
+<script>
+"use strict";
+const $ = function(id){return document.getElementById(id);};
+const state = {events:[],selected:null,source:"No trace loaded",kind:""};
+const sampleTrace = [
+  {event_id:"evt-001",run_id:"demo-run",timestamp:"2026-10-23T10:00:00Z",kind:"tool",name:"order_lookup",inputs:{order_id:"ORD-1042"},outputs:{status:"delivered",days_since_delivery:3},duration_ms:18,token_usage:{},metadata:{source:"synthetic-demo"}},
+  {event_id:"evt-002",run_id:"demo-run",timestamp:"2026-10-23T10:00:01Z",kind:"decision",name:"refund_eligibility",inputs:{days_since_delivery:3,policy_window_days:14},outputs:{eligible:true,reason:"within_policy_window"},duration_ms:2,token_usage:{input_tokens:120,output_tokens:34,total_tokens:154},metadata:{source:"synthetic-usage"}},
+  {event_id:"evt-003",run_id:"demo-run",timestamp:"2026-10-23T10:00:02Z",kind:"tool",name:"refund_quote",inputs:{order_id:"ORD-1042"},outputs:{currency:"USD",amount:49.99},duration_ms:7,token_usage:{},metadata:{source:"synthetic-demo"}},
+  {event_id:"evt-004",run_id:"demo-run",timestamp:"2026-10-23T10:00:03Z",kind:"response",name:"customer_reply",inputs:{intent:"refund_status"},outputs:{message:"The order is eligible; a support agent will confirm the next step."},duration_ms:2,token_usage:{input_tokens:210,output_tokens:48,total_tokens:258},metadata:{source:"synthetic-usage"}}
+];
+function tokenCount(event){
+  const usage=event&&event.token_usage;
+  if(!usage||typeof usage!=="object"||Array.isArray(usage))return null;
+  if(Number.isInteger(usage.total_tokens)&&usage.total_tokens>=0)return usage.total_tokens;
+  const values=Object.values(usage);
+  if(!values.length||values.some(function(v){return !Number.isInteger(v)||v<0;}))return null;
+  return values.reduce(function(sum,value){return sum+value;},0);
+}
+function displayNumber(value,suffix){
+  suffix=suffix||"";
+  return typeof value==="number"&&Number.isFinite(value)&&value>=0?new Intl.NumberFormat().format(value)+suffix:"—";
+}
+function showNotice(lines){
+  const notice=$("notice");
+  notice.textContent=lines.join("\n");
+  notice.classList.toggle("visible",lines.length>0);
+}
+function parseJSONL(text){
+  const events=[],errors=[];
+  text.split(/\r?\n/).forEach(function(line,index){
+    if(!line.trim())return;
+    try{
+      const parsed=JSON.parse(line);
+      if(!parsed||typeof parsed!=="object"||Array.isArray(parsed)){
+        errors.push("Line "+(index+1)+": each record must be a JSON object.");
+        return;
+      }
+      events.push(Object.assign({},parsed,{__arkLine:index+1}));
+    }catch(error){
+      errors.push("Line "+(index+1)+": invalid JSON ("+error.message+").");
+    }
+  });
+  return {events:events,errors:errors};
+}
+function loadEvents(events,source,errors){
+  errors=errors||[];
+  state.events=events;state.selected=events.length?0:null;state.source=source;state.kind="";
+  $("sourceLabel").textContent=source;$("searchInput").value="";$("searchInput").disabled=events.length===0;$("kindFilter").disabled=events.length===0;
+  rebuildKindFilter();updateStats();renderRows();renderSelected();
+  showNotice(errors.slice(0,8).concat(errors.length>8?["…and "+(errors.length-8)+" more parse issue(s)."]:[]));
+}
+function loadText(text,source){
+  const parsed=parseJSONL(text);
+  if(!parsed.events.length&&parsed.errors.length){loadEvents([],source,parsed.errors);return;}
+  loadEvents(parsed.events,source,parsed.errors);
+}
+function rebuildKindFilter(){
+  const filter=$("kindFilter");filter.replaceChildren();
+  const all=document.createElement("option");all.value="";all.textContent="All event kinds";filter.append(all);
+  const kinds=Array.from(new Set(state.events.map(function(e){return typeof e.kind==="string"&&e.kind.trim()?e.kind:"unknown";}))).sort();
+  kinds.forEach(function(kind){const option=document.createElement("option");option.value=kind;option.textContent=kind;filter.append(option);});
+  filter.value=state.kind;
+}
+function updateStats(){
+  const kinds=new Set(state.events.map(function(e){return typeof e.kind==="string"&&e.kind.trim()?e.kind:"unknown";}));
+  const duration=state.events.reduce(function(sum,event){return sum+(typeof event.duration_ms==="number"&&Number.isFinite(event.duration_ms)&&event.duration_ms>=0?event.duration_ms:0);},0);
+  const values=state.events.map(tokenCount).filter(function(value){return value!==null;});
+  const total=values.reduce(function(sum,value){return sum+value;},0);
+  $("statEvents").textContent=new Intl.NumberFormat().format(state.events.length);
+  $("statKinds").textContent=new Intl.NumberFormat().format(kinds.size);
+  $("kindHint").textContent=kinds.size?Array.from(kinds).sort().join(" · "):"Kinds represented";
+  $("statDuration").textContent=displayNumber(duration," ms");
+  $("statTokens").textContent=values.length?displayNumber(total):"—";
+  $("resultCount").textContent=state.events.length?state.events.length+" event(s) loaded":"Load a trace to begin";
+}
+function filteredEvents(){
+  const query=$("searchInput").value.trim().toLowerCase(),kind=$("kindFilter").value;
+  return state.events.map(function(event,index){return {event:event,index:index};}).filter(function(item){
+    const eventKind=typeof item.event.kind==="string"&&item.event.kind.trim()?item.event.kind:"unknown";
+    let serialized="";try{serialized=JSON.stringify(item.event).toLowerCase();}catch(_){}
+    return (!kind||eventKind===kind)&&(!query||serialized.includes(query));
+  });
+}
+function addCell(row,text,className){
+  const td=document.createElement("td");td.textContent=text;if(className)td.className=className;row.append(td);return td;
+}
+function renderRows(){
+  const body=$("eventRows");body.replaceChildren();const filtered=filteredEvents();
+  $("resultCount").textContent=filtered.length+" shown · "+state.events.length+" total";
+  if(!filtered.length){
+    const row=document.createElement("tr"),td=document.createElement("td"),empty=document.createElement("div"),strong=document.createElement("strong");
+    td.colSpan=4;empty.className="empty";strong.textContent="No matching events";empty.append(strong,document.createTextNode("Change the search or kind filter."));td.append(empty);row.append(td);body.append(row);return;
+  }
+  filtered.forEach(function(item){
+    const event=item.event,index=item.index,row=document.createElement("tr");
+    if(state.selected===index)row.className="selected";
+    row.tabIndex=0;row.setAttribute("aria-label","Select event "+(index+1)+": "+(event.name||"unnamed"));
+    addCell(row,String(index+1),"cell-index");
+    const nameCell=document.createElement("td"),name=document.createElement("div"),kind=document.createElement("div");
+    name.className="event-name";name.textContent=typeof event.name==="string"&&event.name?event.name:"Unnamed event";
+    kind.className="event-kind";kind.textContent=typeof event.kind==="string"&&event.kind?event.kind:"unknown";
+    nameCell.append(name,document.createElement("br"),kind);row.append(nameCell);
+    addCell(row,displayNumber(event.duration_ms," ms"),"num");
+    const tokens=tokenCount(event);addCell(row,tokens===null?"—":displayNumber(tokens),"num");
+    row.addEventListener("click",function(){selectEvent(index);});
+    row.addEventListener("keydown",function(keyEvent){if(keyEvent.key==="Enter"||keyEvent.key===" "){keyEvent.preventDefault();selectEvent(index);}});
+    body.append(row);
+  });
+}
+function selectEvent(index){state.selected=index;renderRows();renderSelected();}
+function addText(parent,tag,text,className){
+  const el=document.createElement(tag);if(className)el.className=className;el.textContent=text;parent.append(el);return el;
+}
+function renderSelected(){
+  const pane=$("detailPane");pane.replaceChildren();
+  if(state.selected===null||!state.events[state.selected]){
+    const empty=document.createElement("div"),strong=document.createElement("strong");empty.className="empty";strong.textContent="Select an event";empty.append(strong,document.createTextNode("Captured data appears here as read-only JSON."));pane.append(empty);$("selectedLabel").textContent="None";return;
+  }
+  const event=state.events[state.selected];$("selectedLabel").textContent="#"+(state.selected+1);addText(pane,"h3",event.name||"Unnamed event","detail-title");
+  const meta=document.createElement("div");meta.className="detail-meta";
+  const kind=document.createElement("span");kind.className="pill";kind.textContent=event.kind||"unknown";meta.append(kind);
+  if(event.timestamp){const time=document.createElement("span");time.className="pill";time.textContent=String(event.timestamp);meta.append(time);}
+  if(event.run_id){const run=document.createElement("span");run.className="pill";run.textContent="run: "+event.run_id;meta.append(run);}pane.append(meta);
+  [["Inputs",event.inputs],["Outputs",event.outputs],["Token usage",event.token_usage],["Metadata",event.metadata],["Full event",event]].forEach(function(pair){
+    const label=pair[0],value=pair[1];if(value===undefined||value===null)return;
+    addText(pane,"div",label,"section-label");const pre=document.createElement("pre");
+    try{pre.textContent=JSON.stringify(value,null,2);}catch(_){pre.textContent=String(value);}pane.append(pre);
+  });
+}
+function clearAll(){
+  state.events=[];state.selected=null;state.source="No trace loaded";state.kind="";$("fileInput").value="";$("sourceLabel").textContent=state.source;$("searchInput").value="";$("searchInput").disabled=true;$("kindFilter").disabled=true;rebuildKindFilter();updateStats();renderRows();renderSelected();showNotice([]);
+  $("resultCount").textContent="Load a trace to begin";
+}
+$("browseBtn").addEventListener("click",function(){$("fileInput").click();});
+$("fileInput").addEventListener("change",async function(event){
+  const file=event.target.files&&event.target.files[0];if(!file)return;
+  try{loadText(await file.text(),file.name);}catch(error){showNotice(["Could not read file: "+error.message]);}
+});
+$("sampleBtn").addEventListener("click",function(){loadEvents(sampleTrace.map(function(event){return Object.assign({},event);}),"Synthetic sample trace");});
+$("clearBtn").addEventListener("click",clearAll);
+$("searchInput").addEventListener("input",renderRows);
+$("kindFilter").addEventListener("change",function(event){state.kind=event.target.value;renderRows();});
+const drop=$("dropZone");
+drop.addEventListener("dragover",function(event){event.preventDefault();drop.classList.add("active");});
+drop.addEventListener("dragleave",function(){drop.classList.remove("active");});
+drop.addEventListener("drop",async function(event){
+  event.preventDefault();drop.classList.remove("active");const file=event.dataTransfer&&event.dataTransfer.files&&event.dataTransfer.files[0];if(!file)return;
+  try{loadText(await file.text(),file.name);}catch(error){showNotice(["Could not read file: "+error.message]);}
+});
+updateStats();
+</script>
+</body>
+</html>
