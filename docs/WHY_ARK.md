@@ -2,57 +2,64 @@
 
 **Last reviewed:** 23 October 2026
 
-This note records the problem, intended user, current boundary, and competitive landscape so the project can improve based on evidence rather than marketing claims.
+This note records the problem, intended user, product boundary, and adjacent tools so ARK can compete through a clear use case rather than marketing claims.
 
 ## Problem
 
-An agent workflow may look successful in a demo but still exceed an execution budget, invoke an unexpected tool, omit a required step, or change behavior after a code or prompt update. Logs help explain a run, but a team also needs a repeatable way to define what a valid run should look like and fail CI when that contract is broken.
+An agent workflow may look successful in a demo but still exceed an execution budget, invoke an unexpected tool, omit a required step, or change behavior after a code or prompt update. Logs explain a run; a policy contract states which recorded behaviors are permitted and what limits must be respected.
 
 ## Intended first user
 
 A Python engineer who already records agent/tool events and wants a local, version-controlled CI gate without adopting a hosted observability platform.
 
-## Current ARK approach
+## ARK's current approach
 
-- Store run events in a portable JSONL file.
+- Store caller-supplied events in a portable JSONL trace.
 - Compare recorded behavior across runs.
-- Express a small execution contract as JSON.
-- Check required and forbidden events, event-count limits, per-event call limits, and recorded total duration/token budgets.
-- Reuse the same contract in GitHub Actions.
+- Express permitted, required, and forbidden event names as JSON.
+- Limit total event counts, repeated calls, total recorded duration/tokens, and per-event duration/token use.
+- Fail a GitHub Actions job when the trace violates its policy contract.
 
-The current version **does not** run agents, intercept live provider traffic, deterministically replay LLM calls, inspect hidden prompt/context state, or guarantee that a trace captures every action. Its checks are only as accurate as its instrumentation and policy.
+ARK does not yet run agents, automatically instrument arbitrary frameworks, intercept live provider traffic, replay provider calls, inspect hidden prompt/context state, or guarantee that a trace captures every action. Its checks are only as good as its instrumentation and policy.
 
-## Related projects reviewed
+## Adjacent tools reviewed
 
-These projects solve adjacent problems and are useful references; they are not proof that ARK is novel.
+These projects are established references in neighboring categories. Their existence means ARK should not be positioned as a universal tracing/evaluation platform or claim uniqueness without evidence.
 
-- [ToolReplay](https://github.com/brandynfisher/ToolReplay) audits recorded agent tool-call transcripts for replay divergence, redundant calls, and declared-scope overreach.
+- [Promptfoo](https://github.com/promptfoo/promptfoo) focuses on LLM evaluation, red-teaming, and test workflows that can run in CI.
+- [Langfuse](https://github.com/langfuse/langfuse) provides tracing, prompt management, datasets, and evaluations.
+- [Arize Phoenix](https://github.com/Arize-ai/phoenix) provides AI observability, tracing, evaluation, datasets, experiments, and broad framework/provider integrations.
+- [ToolReplay](https://github.com/brandynfisher/ToolReplay) focuses on auditing recorded tool-call transcripts for replay divergence, redundant calls, and declared-scope overreach.
 - [AgentTape](https://github.com/MITHRAN-BALACHANDER/AgentTape) records external LLM/tool interactions and replays them offline from cassettes.
-- [Agent DevTools](https://github.com/Jacopos311/Agent-Devtools) focuses on local visual debugging, replay, behavior diffs, and inspecting causal context such as memory and retrieval.
+- [Agent DevTools](https://github.com/Jacopos311/Agent-Devtools) focuses on local visual debugging, replay, behavior diffs, and causal context such as memory and retrieval.
 
-## ARK's current positioning
+## ARK's proposed wedge
 
-ARK is intentionally narrower: **declarative JSON policy contracts that can gate CI**, with a small dependency-free Python core and a reusable GitHub Action. This is a project focus, not a claim that no other tool offers policy checks or agent guardrails.
+**A tiny policy file that can block a CI build when recorded agent actions violate a team's explicit contract.**
 
-| Need | Current ARK support |
+| Need | ARK today |
 |---|---|
-| Record events supplied by an application | Yes |
-| Compare recorded traces by event position | Yes |
-| Require/forbid named events | Yes |
-| Limit event counts and named-event repetitions | Yes |
-| Gate on recorded total duration/token counters | Yes |
+| Read caller-supplied JSONL events | Yes |
+| Compare traces by event position | Yes |
+| Allowlist and require/forbid named events | Yes |
+| Limit total events and repeated event calls | Yes |
+| Gate on total recorded duration/token counters | Yes |
+| Gate on per-event duration/token budgets | Yes |
 | Reusable GitHub Action | Yes |
-| Live provider interception and cassette replay | No |
-| Visual causal debugging UI | No |
-| Embeddings, LLM judge, hosted dashboard | No |
+| Auto-instrument common frameworks | No |
+| Provider cassette recording or replay | No |
+| Visual trace explorer / hosted dashboard | No |
+| LLM-as-judge and dataset experiments | No |
+
+This is a focused product position, not a claim that other platforms never implement policies or guardrails.
 
 ## What would validate the idea?
 
-1. Have at least three developers apply ARK to a real or synthetic workflow and report setup friction.
-2. Collect concrete examples where a policy catches a regression that a normal unit test would miss.
-3. Test the action from a separate sample repository, not only from within ARK itself.
-4. Prioritize changes based on repeated user problems: per-step budgets, golden traces, clearer diffs, and CI-native reports.
-5. Keep the README honest about incomplete features and known limitations.
+1. Ask at least three developers to apply ARK to a workflow and report setup friction.
+2. Capture concrete examples where the policy gate catches a regression that ordinary unit tests missed.
+3. Test the composite action from a separate sample repository, not only from the ARK repository itself.
+4. Prioritize repeated user problems over fashionable integrations.
+5. Keep the README honest about limitations and incomplete features.
 
 ## Decision rule
 
