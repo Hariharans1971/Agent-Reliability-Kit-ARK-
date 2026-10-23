@@ -124,7 +124,7 @@ Replace `@main` with a reviewed release tag or commit SHA for production workflo
 | Command | Purpose |
 |---|---|
 | `ark inspect TRACE` | Summarize event count, types, duration, and token totals |
-| `ark diff EXPECTED ACTUAL` | Report changed, added, or removed event positions |
+| `ark diff EXPECTED ACTUAL` | Report changed, added, or removed event positions |\n| `ark diff EXPECTED ACTUAL --ignore-path inputs.request_id` | Ignore a selected dynamic field; repeat the flag for more paths |
 | `ark evaluate TRACE` | Run baseline checks |
 | `ark evaluate TRACE --min-steps 3` | Require at least three events |
 | `ark evaluate TRACE --require order_lookup` | Require a named event |
@@ -142,7 +142,7 @@ Replace `@main` with a reviewed release tag or commit SHA for production workflo
 - [x] Reusable composite GitHub Action for policy enforcement
 - [x] Best-effort recursive key redaction
 - [x] Unit tests and GitHub Actions CI, including expected policy rejection
-- [ ] Golden-trace fixtures and ignore-path rules
+- [ ] Golden-trace fixture packs and comparison presets
 - [x] Per-event duration and token budgets with missing-metric failure
 - [ ] JUnit-compatible CI output
 - [ ] Optional LangChain callback adapter
