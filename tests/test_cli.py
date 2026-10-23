@@ -22,6 +22,32 @@ class PolicyCliTests(unittest.TestCase):
         path.write_text(json.dumps(policy), encoding="utf-8")
         return path
 
+    def test_diff_cli_ignores_requested_path(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            left = TraceRecorder("left")
+            left.record("tool", "lookup", inputs={"request_id": "req-a"}, outputs={"ok": True})
+            right = TraceRecorder("right")
+            right.record("tool", "lookup", inputs={"request_id": "req-b"}, outputs={"ok": True})
+            expected = left.save(Path(tmp) / "expected.jsonl")
+            actual = right.save(Path(tmp) / "actual.jsonl")
+            output = io.StringIO()
+            with contextlib.redirect_stdout(output):
+                code = main([
+                    "diff", str(expected), str(actual),
+                    "--ignore-path", "inputs.request_id",
+                ])
+            self.assertEqual(code, 0)
+            self.assertIn("Differences: 0", output.getvalue())
+
+    def test_diff_cli_reports_invalid_ignore_path(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            trace = self._make_trace(tmp, "lookup")
+            output = io.StringIO()
+            with contextlib.redirect_stderr(output):
+                code = main(["diff", str(trace), str(trace), "--ignore-path", "inputs..id"])
+            self.assertEqual(code, 2)
+            self.assertIn("empty path segment", output.getvalue())
+
     def test_policy_command_returns_zero_for_allowed_trace(self):
         with tempfile.TemporaryDirectory() as tmp:
             trace = self._make_trace(tmp, "lookup")
