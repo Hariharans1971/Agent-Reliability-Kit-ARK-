@@ -10,8 +10,8 @@
 - [x] Project mark added
 
 ## Complete manually in GitHub settings
-- [ ] Set the repository About description to: "Local-first tracing and regression checks for AI-agent workflows."
-- [ ] Add topics: `ai-agents`, `agent-evaluation`, `observability`, `python`, `developer-tools`, `testing`, `llm`.
+- [ ] Optional branding cleanup: rename `Agent-Reliability-Kit-ARK-` to `agent-reliability-kit` in Settings → General; this changes the canonical URL, so update links and `uses:` examples afterward.\n- [ ] Set the repository About description to: "Local-first policy-as-code guardrails and JSONL trace diffs for AI-agent workflows."
+- [ ] Add topics: `ai-agents`, `agent-evaluation`, `observability`, `python`, `developer-tools`, `testing`, `llm`, `policy-as-code`, `github-actions`.
 - [ ] Upload a PNG/JPG social preview (1280 × 640 recommended).
 - [ ] Pin the repository on your profile once it is stable.
 - [ ] Create the profile README repository named exactly `Hariharans1971` and copy `PROFILE_README.md` to its root `README.md`.
