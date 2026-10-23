@@ -26,6 +26,7 @@ Any Python agent or tool
 - `ark.redact.redact`: best-effort recursive removal of values under common sensitive keys.
 - `ark.cli`: command-line interface, with JUnit XML output for evaluation and policy checks.
 - `action.yml`: reusable composite GitHub Action that fails a workflow when a JSON policy contract fails.
+- `examples/trace-viewer.html`: optional offline browser inspection interface for local JSONL files.
 
 ## Design choices
 
@@ -47,4 +48,5 @@ The initial policy engine validates concrete invariants. Model-based judges can 
 - Diffing operates by event position; it does not align reordered events. Opt-in changed-path output narrows field-level differences but is not an edit-distance or semantic alignment algorithm.
 - Policy checks only see the events and metrics that instrumentation records.
 - Redaction is based on key names and cannot detect every sensitive string.
+- The browser viewer is for inspection only; it does not run policy contracts or redact data.
 - Production use needs a team-defined trace retention and access policy.
