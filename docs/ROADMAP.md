@@ -5,14 +5,14 @@ The roadmap is community input, not a promise that every feature will ship.
 ## Phase 1 — reliable core
 - [x] JSONL trace recorder and reader
 - [x] Inspect, diff, and evaluate commands
-- [x] Declarative JSON policy contracts (required/forbidden events, call limits, duration/token budgets)
+- [x] Declarative JSON policy contracts (allowlisted/required/forbidden events, call limits, total/per-event duration and token budgets)
 - [x] Reusable GitHub Action for CI policy enforcement
 - [x] Best-effort recursive key redaction
 - [x] Unit tests and CI matrix
 
 ## Phase 2 — stronger regression checks
 - [ ] Golden trace fixtures with ignore-path rules for dynamic values
-- [ ] Per-step and per-tool latency/token budget assertions
+- [x] Per-event duration/token budgets with explicit missing-metric failures
 - [ ] JUnit-compatible CI output
 - [ ] Better nested JSON diff output
 - [ ] Exportable HTML trace viewer
