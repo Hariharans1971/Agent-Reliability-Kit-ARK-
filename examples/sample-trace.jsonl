@@ -1,0 +1,2 @@
+{"event_id":"sample-1","run_id":"sample-run","timestamp":"2026-01-01T00:00:00+00:00","kind":"tool","name":"order_lookup","inputs":{"order_id":"ORD-1042"},"outputs":{"status":"delivered"},"duration_ms":18,"token_usage":{},"metadata":{"run_name":"sample","tags":{"environment":"demo"}}}
+{"event_id":"sample-2","run_id":"sample-run","timestamp":"2026-01-01T00:00:01+00:00","kind":"decision","name":"refund_eligibility","inputs":{"days_since_delivery":3},"outputs":{"eligible":true},"duration_ms":1,"token_usage":{},"metadata":{"run_name":"sample","tags":{"environment":"demo"}}}
