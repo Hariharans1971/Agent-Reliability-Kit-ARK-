@@ -4,7 +4,7 @@
 - [x] Public repository created
 - [x] README with quick start and project scope
 - [x] Python package and CLI files published
-- [x] Unit tests and GitHub Actions workflow added
+- [x] Unit tests and GitHub Actions workflow added\n- [x] JSON policy contracts and reusable GitHub Action published
 - [x] MIT license, security policy, and contributing guide added
 - [x] Roadmap and issue templates added
 - [x] Project mark added

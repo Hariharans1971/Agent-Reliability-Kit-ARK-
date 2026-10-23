@@ -10,7 +10,7 @@ readme = "README.md"
 requires-python = ">=3.10"
 license = {file = "LICENSE"}
 authors = [{name = "Hariharan S."}]
-keywords = ["ai-agents", "observability", "evaluation", "replay", "testing", "llm"]
+keywords = ["ai-agents", "observability", "evaluation", "replay", "testing", "llm", "policy-as-code", "github-actions"]
 dependencies = []
 
 [project.scripts]

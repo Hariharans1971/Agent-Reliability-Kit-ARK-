@@ -5,6 +5,8 @@ The roadmap is community input, not a promise that every feature will ship.
 ## Phase 1 — reliable core
 - [x] JSONL trace recorder and reader
 - [x] Inspect, diff, and evaluate commands
+- [x] Declarative JSON policy contracts (required/forbidden events, call limits, duration/token budgets)
+- [x] Reusable GitHub Action for CI policy enforcement
 - [x] Best-effort recursive key redaction
 - [x] Unit tests and CI matrix
 
