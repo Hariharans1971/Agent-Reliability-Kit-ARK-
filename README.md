@@ -17,6 +17,8 @@ A local-first Python toolkit for recording AI-agent workflows as readable JSONL 
 
 If ARK is useful in your workflow, star the repository and share a reproducible issue using synthetic traces. Real feedback drives the roadmap.
 
+**[Try the offline trace viewer ↗](https://portfolio1-tau-sandy.vercel.app/ark-trace-viewer.html)** · [Quick start](#quick-start) · [Contribute](CONTRIBUTING.md)
+
 </div>
 
 ---
