@@ -37,8 +37,12 @@
 - [ ] Create the profile README repository named exactly `Hariharans1971` and copy `PROFILE_README.md` to its root `README.md`.
 
 ## Before tagging a release
-- [ ] Confirm all GitHub Actions matrix jobs pass.
-- [ ] Run the package in a clean virtual environment on Windows and Linux/macOS.
-- [ ] Review the known limitations in `docs/ARCHITECTURE.md`.
-- [ ] Update `CHANGELOG.md` and the package version.
-- [ ] Publish only after the interface and docs match the released behavior.
+- [x] Confirm all GitHub Actions matrix jobs pass on the latest verified main commits.
+- [x] Build and install the wheel in a clean virtual environment in CI; Python 3.10–3.12 tests pass.
+- [x] Review and document the known limitations in `docs/ARCHITECTURE.md`.
+- [x] Align `CHANGELOG.md` and staged v0.1.0 alpha release notes with package version 0.1.0.
+- [x] Add action branding metadata and an automated, validation-gated release workflow.
+- [ ] Run Actions → Release manually to create the tag and public alpha release with built assets.
+- [ ] Review the resulting release page, uploaded assets, and SHA256SUMS.
+- [ ] Publish the action to GitHub Marketplace after accepting the developer agreement and selecting categories.
+- [ ] Apply repository About/topics, upload the social-preview image in Settings, pin repositories, and create the special profile README repository.
