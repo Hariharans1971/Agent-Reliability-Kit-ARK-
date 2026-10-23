@@ -1,0 +1,66 @@
+name: Consumer action smoke test
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "17 8 * * 1"
+  push:
+    branches: [main]
+    paths:
+      - "action.yml"
+      - "pyproject.toml"
+      - "ark/**"
+      - "examples/**"
+      - "policies/**"
+      - ".github/workflows/consumer-smoke.yml"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: consumer-smoke-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  policy-pass:
+    name: Consumer workflow accepts a compliant trace
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the example consumer files
+        uses: actions/checkout@v7
+      - name: Prepare a synthetic agent trace
+        uses: actions/setup-python@v7
+        with:
+          python-version: "3.12"
+      - name: Install demo package and create trace
+        run: |
+          python -m pip install -e .
+          python examples/customer_support_agent.py
+      - name: Enforce the contract via the published action reference
+        uses: Hariharans1971/Agent-Reliability-Kit-ARK-@main
+        with:
+          trace: artifacts/customer-support.jsonl
+          policy: policies/customer-support.json
+          python-version: "3.12"
+      - name: Write JUnit policy report
+        run: ark policy artifacts/customer-support.jsonl --policy policies/customer-support.json --junit-xml artifacts/consumer-policy-results.xml
+
+  policy-reject:
+    name: Consumer workflow rejects an unapproved trace
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the example consumer files
+        uses: actions/checkout@v7
+      - name: Invoke the published action on a deliberately restricted policy
+        id: restricted
+        continue-on-error: true
+        uses: Hariharans1971/Agent-Reliability-Kit-ARK-@main
+        with:
+          trace: examples/sample-trace.jsonl
+          policy: policies/reject-sample.json
+          python-version: "3.12"
+      - name: Assert the action failed on the unapproved trace
+        if: steps.restricted.outcome != 'failure'
+        run: |
+          echo "::error::Expected the public ARK action to reject the unapproved trace"
+          exit 1
