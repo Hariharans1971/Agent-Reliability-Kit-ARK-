@@ -202,7 +202,35 @@ class ARKTests(unittest.TestCase):
         self.assertIn("branding:", action)
         self.assertIn("  icon: shield", action)
         self.assertIn("  color: blue", action)
-        self.assertRegex(project_metadata, r'(?m)^version = "0\.1\.0"$')
+        metadata_files = sorted(
+            path.relative_to(root).as_posix()
+            for path in root.rglob("action.yml")
+            if ".git" not in path.parts
+        ) + sorted(
+            path.relative_to(root).as_posix()
+            for path in root.rglob("action.yaml")
+            if ".git" not in path.parts
+        )
+        self.assertEqual(metadata_files, ["action.yml"])
+        self.assertRegex(project_metadata, r'(?m)^version = "0\.1\.0"
+        self.assertTrue(release_notes.is_file())
+        self.assertIn("GitHub Marketplace publication", release_checklist)
+        self.assertIn("workflow_dispatch:", release_workflow)
+        self.assertIn("python -m build --sdist --wheel", release_workflow)
+        self.assertIn("sha256sum *.whl *.tar.gz > SHA256SUMS", release_workflow)
+        self.assertIn("gh release create", release_workflow)
+
+    def test_invalid_jsonl_has_line_number(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            target = Path(tmp) / "bad.jsonl"
+            target.write_text('not-json\n', encoding="utf-8")
+            with self.assertRaisesRegex(ValueError, ":1:"):
+                load_trace(target)
+
+
+if __name__ == "__main__":
+    unittest.main()
+)
         self.assertTrue(release_notes.is_file())
         self.assertIn("GitHub Marketplace publication", release_checklist)
         self.assertIn("workflow_dispatch:", release_workflow)
