@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="assets/ark-mark.svg" alt="Agent Reliability Kit mark" width="140" />
+<img src="assets/ark-banner.svg" alt="Agent Reliability Kit: policy-as-code guardrails for AI-agent workflows" width="100%" />
 
 # Agent Reliability Kit (ARK)
 
