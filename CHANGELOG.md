@@ -7,7 +7,9 @@ Notable changes are recorded here. This project is in its initial MVP phase.
 - Added a local-first JSONL trace recorder.
 - Added trace loading with line-specific malformed-input errors.
 - Added CLI commands for inspection, comparison, and deterministic checks.
-- Added a best-effort recursive redaction helper.\n- Added JSON policy contracts for required/forbidden events, event-count/call limits, and recorded duration/token budgets.\n- Added a reusable composite GitHub Action to enforce those contracts in CI.
+- Added a best-effort recursive redaction helper.
+- Added JSON policy contracts for required/forbidden events, event-count/call limits, and recorded duration/token budgets.
+- Added a reusable composite GitHub Action to enforce those contracts in CI.
 - Added synthetic customer-support trace example.
 - Added unit tests and Python 3.10–3.12 GitHub Actions matrix.
 - Added contributor, security, community, and release documentation.

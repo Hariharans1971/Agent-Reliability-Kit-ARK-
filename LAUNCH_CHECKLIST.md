@@ -4,13 +4,15 @@
 - [x] Public repository created
 - [x] README with quick start and project scope
 - [x] Python package and CLI files published
-- [x] Unit tests and GitHub Actions workflow added\n- [x] JSON policy contracts and reusable GitHub Action published
+- [x] Unit tests and GitHub Actions workflow added
+- [x] JSON policy contracts and reusable GitHub Action published
 - [x] MIT license, security policy, and contributing guide added
 - [x] Roadmap and issue templates added
 - [x] Project mark added
 
 ## Complete manually in GitHub settings
-- [ ] Optional branding cleanup: rename `Agent-Reliability-Kit-ARK-` to `agent-reliability-kit` in Settings → General; this changes the canonical URL, so update links and `uses:` examples afterward.\n- [ ] Set the repository About description to: "Local-first policy-as-code guardrails and JSONL trace diffs for AI-agent workflows."
+- [ ] Optional branding cleanup: rename `Agent-Reliability-Kit-ARK-` to `agent-reliability-kit` in Settings → General; this changes the canonical URL, so update links and `uses:` examples afterward.
+- [ ] Set the repository About description to: "Local-first policy-as-code guardrails and JSONL trace diffs for AI-agent workflows."
 - [ ] Add topics: `ai-agents`, `agent-evaluation`, `observability`, `python`, `developer-tools`, `testing`, `llm`, `policy-as-code`, `github-actions`.
 - [ ] Upload a PNG/JPG social preview (1280 × 640 recommended).
 - [ ] Pin the repository on your profile once it is stable.
