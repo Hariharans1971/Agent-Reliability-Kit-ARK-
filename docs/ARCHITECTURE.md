@@ -24,8 +24,7 @@ Any Python agent or tool
 - `ark.evaluate.evaluate_trace`: runs simple baseline checks.
 - `ark.policy.evaluate_policy`: enforces allowlisted/required/forbidden events, event/call limits, total budgets, and per-event duration/token budgets.
 - `ark.redact.redact`: best-effort recursive removal of values under common sensitive keys.
-- `ark.cli`: command-line interface.
-- `ark.cli`: includes JUnit XML output for evaluation and policy checks.
+- `ark.cli`: command-line interface, with JUnit XML output for evaluation and policy checks.
 - `action.yml`: reusable composite GitHub Action that fails a workflow when a JSON policy contract fails.
 
 ## Design choices
