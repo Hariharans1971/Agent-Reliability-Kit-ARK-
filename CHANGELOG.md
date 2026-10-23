@@ -12,6 +12,8 @@ Notable changes are recorded here. Features under Unreleased are merged on `main
 - Added consumer-style GitHub Actions checks for the composite action's passing and rejection paths.
 - Corrected aggregate token accounting so recorded `total_tokens` is not added to its own input/output subtotals.
 - Improved regression coverage for trace schema validation, policy budgets, ignored diff paths, and CI report output.
+- Added weekly Dependabot updates for Python packaging and GitHub Actions.
+- Added CI that builds source/wheel distributions and installs the wheel in a clean virtual environment.
 
 ## 0.1.0 — initial public MVP
 
