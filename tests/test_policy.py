@@ -54,7 +54,7 @@ class PolicyTests(unittest.TestCase):
             "max_total_duration_ms",
             "max_total_tokens",
         ])
-        self.assertFalse(any(item["passed"] for item in results))
+        self.assertFalse(results[0]["passed"])  # forbidden event\n        self.assertTrue(results[1]["passed"])   # all events recorded duration\n        self.assertFalse(results[2]["passed"])  # total duration over budget\n        self.assertFalse(results[3]["passed"])  # total tokens over budget
 
     def test_policy_caps_number_of_calls(self):
         results = evaluate_policy(
