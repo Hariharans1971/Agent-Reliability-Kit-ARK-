@@ -8,6 +8,16 @@ from collections import Counter
 from .diff import diff_traces
 from .evaluate import evaluate_trace
 from .io import load_trace
+from .policy import evaluate_policy, load_policy
+
+
+def _print_results(results: list[dict], as_json: bool = False) -> bool:
+    if as_json:
+        print(json.dumps(results, indent=2))
+    else:
+        for item in results:
+            print(f"[{'PASS' if item['passed'] else 'FAIL'}] {item['name']}: {item['message']}")
+    return all(item["passed"] for item in results)
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -16,18 +26,26 @@ def main(argv: list[str] | None = None) -> int:
         description="Inspect and regression-test AI-agent JSONL traces.",
     )
     sub = parser.add_subparsers(dest="command", required=True)
+
     inspect_parser = sub.add_parser("inspect", help="summarize a trace")
     inspect_parser.add_argument("trace")
+
     diff_parser = sub.add_parser("diff", help="compare two traces")
     diff_parser.add_argument("expected")
     diff_parser.add_argument("actual")
-    eval_parser = sub.add_parser("evaluate", help="run deterministic checks")
+
+    eval_parser = sub.add_parser("evaluate", help="run basic deterministic checks")
     eval_parser.add_argument("trace")
     eval_parser.add_argument("--min-steps", type=int, default=1)
     eval_parser.add_argument("--require", action="append", default=[])
     eval_parser.add_argument("--json", action="store_true", help="output JSON results")
-    args = parser.parse_args(argv)
 
+    policy_parser = sub.add_parser("policy", help="enforce a JSON policy contract against a trace")
+    policy_parser.add_argument("trace")
+    policy_parser.add_argument("--policy", dest="policy_file", required=True)
+    policy_parser.add_argument("--json", action="store_true", help="output JSON results")
+
+    args = parser.parse_args(argv)
     try:
         if args.command == "inspect":
             events = load_trace(args.trace)
@@ -50,16 +68,15 @@ def main(argv: list[str] | None = None) -> int:
                 print("actual:  ", json.dumps(item["actual"], sort_keys=True))
             return 1 if differences else 0
 
-        if args.min_steps < 0:
-            print("--min-steps must be >= 0", file=sys.stderr)
-            return 2
-        results = evaluate_trace(load_trace(args.trace), args.min_steps, args.require)
-        if args.json:
-            print(json.dumps(results, indent=2))
-        else:
-            for item in results:
-                print(f"[{'PASS' if item['passed'] else 'FAIL'}] {item['name']}: {item['message']}")
-        return 0 if all(item["passed"] for item in results) else 1
+        if args.command == "evaluate":
+            if args.min_steps < 0:
+                print("--min-steps must be >= 0", file=sys.stderr)
+                return 2
+            results = evaluate_trace(load_trace(args.trace), args.min_steps, args.require)
+            return 0 if _print_results(results, args.json) else 1
+
+        results = evaluate_policy(load_trace(args.trace), load_policy(args.policy_file))
+        return 0 if _print_results(results, args.json) else 1
     except (OSError, ValueError) as exc:
         print(f"ark: {exc}", file=sys.stderr)
         return 2
