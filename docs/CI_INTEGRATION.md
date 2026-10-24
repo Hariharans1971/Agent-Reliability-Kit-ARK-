@@ -40,9 +40,9 @@ This produces a behavioral comparison of two different runs. Event IDs, run IDs,
 Generate or collect the trace before invoking the ARK action. Keep the trace and policy paths inside the checked-out workspace.
 
 ```yaml
-- uses: actions/checkout@v4
+- uses: actions/checkout@v7
 
-- uses: actions/setup-python@v5
+- uses: actions/setup-python@v7
   with:
     python-version: "3.12"
 
