@@ -37,7 +37,7 @@ jobs:
           python -m pip install -e .
           python examples/customer_support_agent.py
       - name: Enforce the contract via the published action reference
-        uses: Hariharans1971/Agent-Reliability-Kit-ARK-@765abad7b114f6d7ba25066f931f529dfd41c526
+        uses: Hariharans1971/Agent-Reliability-Kit-ARK-@3154b6fe02c9b089c8d76b2a972aaef8f2b05dc0
         with:
           trace: artifacts/customer-support.jsonl
           policy: policies/customer-support.json
@@ -76,7 +76,7 @@ jobs:
       - name: Invoke the published action on a deliberately restricted policy
         id: restricted
         continue-on-error: true
-        uses: Hariharans1971/Agent-Reliability-Kit-ARK-@765abad7b114f6d7ba25066f931f529dfd41c526
+        uses: Hariharans1971/Agent-Reliability-Kit-ARK-@3154b6fe02c9b089c8d76b2a972aaef8f2b05dc0
         with:
           trace: examples/sample-trace.jsonl
           policy: policies/reject-sample.json
