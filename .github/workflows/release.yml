@@ -8,12 +8,16 @@ on:
         required: true
         type: string
         default: "0.1.0"
+  push:
+    branches: [main]
+    paths:
+      - "docs/releases/v0.1.0.md"
 
 permissions:
   contents: read
 
 concurrency:
-  group: ark-release-${{ inputs.version }}
+  group: ark-release-${{ inputs.version || '0.1.0' }}
   cancel-in-progress: false
 
 jobs:
@@ -33,7 +37,7 @@ jobs:
           python-version: ${{ matrix.python-version }}
       - name: Require the default branch and matching release metadata
         env:
-          RELEASE_VERSION: ${{ inputs.version }}
+          RELEASE_VERSION: ${{ inputs.version || '0.1.0' }}
         run: |
           set -Eeuo pipefail
           test "$GITHUB_REF_NAME" = "main" || {
@@ -157,7 +161,7 @@ jobs:
       - name: Create release from the verified commit
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          RELEASE_VERSION: ${{ inputs.version }}
+          RELEASE_VERSION: ${{ inputs.version || '0.1.0' }}
         shell: bash
         run: |
           set -Eeuo pipefail
@@ -172,6 +176,10 @@ jobs:
           }
           git fetch --tags origin
           if git rev-parse --verify --quiet "refs/tags/${tag}" >/dev/null; then
+            if [ "$GITHUB_EVENT_NAME" = "push" ]; then
+              echo "::notice::Tag ${tag} already exists; the notes-only trigger will not rewrite it."
+              exit 0
+            fi
             echo "::error::Tag ${tag} already exists. Do not overwrite an existing release."
             exit 1
           fi
