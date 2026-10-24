@@ -46,6 +46,6 @@
 - [x] Validate every GitHub Actions workflow's YAML syntax/structure in CI, including the release workflow.
 - [x] Pin the README composite-action example to a reviewed full commit SHA.
 - [x] Create the `v0.1.0` alpha draft release through the validation-gated workflow; attach wheel, source archive, and SHA256SUMS.
-- [ ] Review the draft, uploaded assets, and SHA256SUMS; publish it in GitHub only after selecting the Marketplace option and category.
+- [ ] Review the [v0.1.0 draft release](https://github.com/Hariharans1971/Agent-Reliability-Kit-ARK-/releases/tag/untagged-3a4207a8b1f2855de01c), uploaded assets, and SHA256SUMS; publish it in GitHub only after selecting the Marketplace option and category.
 - [ ] Publish the action to GitHub Marketplace after accepting the developer agreement and selecting categories.
 - [ ] Apply repository About/topics, upload the social-preview image in Settings, pin repositories, and create the special profile README repository.
