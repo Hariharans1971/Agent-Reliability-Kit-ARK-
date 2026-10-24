@@ -139,7 +139,7 @@ ARK includes a composite action so a repository can fail CI when a recorded agen
   run: python your_agent_test.py
 
 - name: Enforce agent execution contract
-  uses: Hariharans1971/Agent-Reliability-Kit-ARK-@3ed7a4a84f09968431e4657f332e6b7f48125c76
+  uses: Hariharans1971/Agent-Reliability-Kit-ARK-@3154b6fe02c9b089c8d76b2a972aaef8f2b05dc0
   with:
     trace: artifacts/agent-trace.jsonl
     policy: policies/agent-policy.json
