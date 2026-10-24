@@ -6,7 +6,7 @@ Notable changes are listed here. The tagged GitHub release determines which comm
 
 - Add future changes here after they are merged.
 
-## 0.1.0 — Alpha (2026-10-23)
+## 0.1.0 — Alpha candidate (staged 2026-10-24)
 
 - Added a local-first JSONL trace recorder and schema-validated trace loader with path/line-specific malformed-input errors.
 - Added CLI commands for inspection, positional trace diffs, baseline evaluation, and policy enforcement.
@@ -17,4 +17,4 @@ Notable changes are listed here. The tagged GitHub release determines which comm
 - Added best-effort recursive key redaction and a synthetic customer-support workflow example.
 - Added a self-contained offline HTML JSONL viewer with search, event-kind filters, summary metrics, and per-event inspection.
 - Added regression tests, Ruff static analysis, Python 3.10–3.12 test matrix, clean wheel build/install verification, and weekly Dependabot updates.
-- Added architecture, policy, security, contributor, citation, release, and community-adoption documentation.
+- Added an SVG workflow diagram, a dedicated CLI guide, architecture/policy/security/contributor/citation/release docs, and a community-adoption plan.
