@@ -216,6 +216,8 @@ class ARKTests(unittest.TestCase):
         self.assertTrue(release_notes.is_file())
         self.assertIn("GitHub Marketplace publication", release_checklist)
         self.assertIn("workflow_dispatch:", release_workflow)
+        self.assertNotIn("import tomllib", release_workflow)
+        self.assertIn("version_match = re.search", release_workflow)
         self.assertIn("python -m build --sdist --wheel", release_workflow)
         self.assertIn("sha256sum *.whl *.tar.gz > SHA256SUMS", release_workflow)
         self.assertIn("gh release create", release_workflow)
