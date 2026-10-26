@@ -135,7 +135,7 @@ jobs:
           sha256sum *.whl *.tar.gz > SHA256SUMS
           cat SHA256SUMS
       - name: Upload release assets
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: release-assets
           path: dist/*
